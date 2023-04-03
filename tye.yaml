@@ -4,13 +4,8 @@ services:
   project: src/Modsen.Authors/Modsen.Authors.csproj
   bindings:
     - port: 3000
-- name: modsen-library-db
-  image: modsen-library-db
-  env:
-    - name: MODSEN_LIBRARY_USERNAME
-      value: "modsen_library_dev"
-    - name: MODSEN_LIBRARY_PASSWORD
-      value: "modsen_library_dev"
+- name: modsen-library-dev
+  external: true
   bindings:
     - port: 5432
-      connectionString: Host=localhost;Port=${port};Username=${env:MODSEN_LIBRARY_USERNAME};Password=${env:MODSEN_LIBRARY_PASSWORD};
+      connectionString: Host=localhost;Port=${port};Username=modsen_library_dev;Password=modsen_library_dev;

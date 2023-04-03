@@ -29,13 +29,12 @@ namespace Modsen.Authors.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Born")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("Die")
+                    b.Property<DateTime?>("Die")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")

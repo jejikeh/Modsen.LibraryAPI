@@ -13,11 +13,12 @@ public static class PersistenceInjection
             {
                 optionsBuilder.EnableSensitiveDataLogging();
                 optionsBuilder.EnableDetailedErrors();
-                optionsBuilder.UseNpgsql(configuration.GetConnectionString("modsen-library-db"));
+                optionsBuilder.UseNpgsql(configuration.GetConnectionString("modsen-library-dev"));
                 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             },
             ServiceLifetime.Transient
         );
+        
         serviceCollection.AddScoped<IAuthorRepository, AuthorRepository>();
         return serviceCollection;
     } 

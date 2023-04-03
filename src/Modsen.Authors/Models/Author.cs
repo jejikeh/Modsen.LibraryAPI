@@ -6,6 +6,6 @@ public class Author
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
     public required DateTime Born { get; set; }
-    public DateTime Die { get; set; } = DateTime.MinValue;
-    public string Bio { get; set;} = string.Empty;
+    public DateTime? Die { get; set; }
+    public string? Bio { get; set; }
 }
