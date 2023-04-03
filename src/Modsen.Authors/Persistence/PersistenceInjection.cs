@@ -17,7 +17,7 @@ public static class PersistenceInjection
                 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             }, 
             ServiceLifetime.Transient
-        );q
+        )
         /*
 
         */
