@@ -18,9 +18,6 @@ public static class PersistenceInjection
             },
             ServiceLifetime.Transient
         );
-        /*
-
-        */
         serviceCollection.AddScoped<IAuthorRepository, AuthorRepository>();
         return serviceCollection;
     } 
