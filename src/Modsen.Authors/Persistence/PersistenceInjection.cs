@@ -15,9 +15,9 @@ public static class PersistenceInjection
                 optionsBuilder.EnableDetailedErrors();
                 optionsBuilder.UseNpgsql(configuration.GetConnectionString("modsen-library-db"));
                 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            }, 
+            },
             ServiceLifetime.Transient
-        )
+        );
         /*
 
         */
