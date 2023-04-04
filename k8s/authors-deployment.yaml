@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: authorservice
-          image: jejikeh/modsen-authors:1.0.0
+          image: jejikeh/modsen-authors:latest
 ---
 apiVersion: v1
 kind: Service

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bookservice
-          image: jejikeh/modsen-books:1.0.0
+          image: jejikeh/modsen-books:latest
 --- 
 apiVersion: v1
 kind: Service
