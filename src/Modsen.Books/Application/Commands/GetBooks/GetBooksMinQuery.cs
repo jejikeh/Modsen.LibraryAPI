@@ -1,6 +1,9 @@
-﻿namespace Modsen.Books.Application.Commands.GetBooks;
+﻿using MediatR;
+using Modsen.Books.Application.Dtos;
 
-public class GetBooksMinQuery
+namespace Modsen.Books.Application.Commands.GetBooks;
+
+public class GetBooksMinQuery : IRequest<IEnumerable<BookMinDetailsDto>>
 {
     
 }

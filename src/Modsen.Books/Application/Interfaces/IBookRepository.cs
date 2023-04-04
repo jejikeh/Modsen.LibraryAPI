@@ -1,6 +1,6 @@
 ﻿using Modsen.Books.Models;
 
-namespace Modsen.Books.Application;
+namespace Modsen.Books.Application.Interfaces;
 
 public interface IBookRepository
 {
