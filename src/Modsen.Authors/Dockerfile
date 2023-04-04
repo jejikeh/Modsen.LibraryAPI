@@ -9,5 +9,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build-env /app ./
 
-EXPOSE 5000
 ENTRYPOINT ["dotnet", "Modsen.Authors.dll"]
