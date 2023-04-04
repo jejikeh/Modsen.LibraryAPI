@@ -35,20 +35,20 @@ public static class ServiceMiddlewareExtensions
         return builder;
     }
     
-    public static WebApplication InitializeServiceContextProvider(this WebApplication app)
-    {
-        using var scope = app.Services.CreateScope();
-        var serviceProvider = scope.ServiceProvider;
-        try
+        public static WebApplication InitializeServiceContextProvider(this WebApplication app)
         {
-            var authorDbContext = serviceProvider.GetRequiredService<AuthorDbContext>();
-            authorDbContext.Database.EnsureCreated();
-        }
-        catch (Exception ex)
-        {
-            //
-        }
+            using var scope = app.Services.CreateScope();
+            var serviceProvider = scope.ServiceProvider;
+            try
+            {
+                var authorDbContext = serviceProvider.GetRequiredService<AuthorDbContext>();
+                authorDbContext.Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                //
+            }
 
-        return app;
-    }
+            return app;
+        }
 }
