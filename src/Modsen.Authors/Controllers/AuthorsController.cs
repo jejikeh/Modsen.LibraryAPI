@@ -2,8 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Modsen.Authors.Application.Commands.CreateAuthor;
-using Modsen.Authors.Application.Commands.GetAllAuthors;
 using Modsen.Authors.Application.Commands.GetAuthor;
+using Modsen.Authors.Application.Commands.GetAuthors;
+using Modsen.Authors.Application.Dtos;
 
 namespace Modsen.Authors.Controllers;
 
@@ -21,12 +22,12 @@ public class AuthorsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AuthorReadMinDto>>> GetAllAuthorMin()
+    public async Task<ActionResult<IEnumerable<AuthorMinDetailsDto>>> GetAllAuthorMin()
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
-        var authors = await Mediator.Send(new GetAllAuthorsMinQuery());
+        var authors = await Mediator.Send(new GetAuthorsMinQuery());
         return Ok(authors);
     }
     
