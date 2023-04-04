@@ -4,7 +4,7 @@ using Modsen.Authors.Models;
 
 namespace Modsen.Authors.Application.Commands.CreateAuthor;
 
-public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand>
+public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand, Author>
 {
     private readonly IAuthorRepository _authorRepository;
 
@@ -13,7 +13,7 @@ public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand>
         _authorRepository = authorRepository;
     }
 
-    public async Task Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
+    public async Task<Author> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
     {
         var author = new Author()
         {
@@ -27,5 +27,6 @@ public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand>
 
         await _authorRepository.CreateAuthor(author);
         await _authorRepository.SaveChangesAsync();
+        return author;
     }
 }
