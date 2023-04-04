@@ -4,6 +4,10 @@ services:
     project: src/Modsen.Authors/Modsen.Authors.csproj
     bindings:
       - port: 3000
+  - name: modsen-books
+    project: src/Modsen.Books/Modsen.Books.csproj
+    bindings:
+      - port: 4000
   - name: modsen-library-dev
     external: true
     bindings:
