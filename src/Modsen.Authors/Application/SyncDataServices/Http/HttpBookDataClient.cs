@@ -15,15 +15,15 @@ public class HttpBookDataClient : IBookDataClient
         _configuration = configuration;
     }
     
-    public async Task SendAuthorToBook(AuthorMinDetailsDto authorMinDetailsDto)
+    public async Task SendAuthorToBook(AuthorDetailsDto authorDetailsDto)
     {
         var httpContent = new StringContent(
-            JsonSerializer.Serialize(authorMinDetailsDto),
+            JsonSerializer.Serialize(authorDetailsDto),
             Encoding.UTF8,
             "application/json");
 
         // TODO: inject logger here
-        var response = await _httpClient.PostAsync($"{_configuration.GetServiceUri("modsen-books")}/api/external/authors", httpContent);
+        var response = await _httpClient.PostAsync($"{_configuration["BookService"]}/authors/", httpContent);
         Console.WriteLine(response.IsSuccessStatusCode
             ? "--> Sync Post to Book Service was Ok"
             : "--> Sync Post to Book Service was Not Ok");

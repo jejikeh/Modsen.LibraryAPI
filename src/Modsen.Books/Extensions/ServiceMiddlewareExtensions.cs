@@ -2,6 +2,7 @@
 using Modsen.Books.Application;
 using Modsen.Books.Application.Common.Mappings;
 using Modsen.Books.Application.Interfaces;
+using Modsen.Books.Controllers;
 using Modsen.Books.Persistence;
 
 namespace Modsen.Books.Extensions;
@@ -10,9 +11,10 @@ public static class ServiceMiddlewareExtensions
 {
     public static WebApplicationBuilder RegisterServiceMiddleware(this WebApplicationBuilder builder)
     {
+        builder.Services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<AuthorsController>>());
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen();   
 
         builder.Services.AddAutoMapper(config =>
         {

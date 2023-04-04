@@ -10,6 +10,7 @@ public static class ServiceMiddlewareExtensions
 {
     public static WebApplicationBuilder RegisterServiceMiddleware(this WebApplicationBuilder builder)
     {
+        builder.Services.AddLogging();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

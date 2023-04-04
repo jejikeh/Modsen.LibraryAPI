@@ -4,5 +4,5 @@ namespace Modsen.Authors.Application.SyncDataServices.Http;
 
 public interface IBookDataClient
 {
-    public Task SendAuthorToBook(AuthorMinDetailsDto authorMinDetailsDto);
+    public Task SendAuthorToBook(AuthorDetailsDto authorMinDetailsDto);
 }
