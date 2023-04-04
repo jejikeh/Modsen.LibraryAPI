@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using Modsen.Authors.Application.Commands.GetAllAuthors;
 using Modsen.Authors.Application.Common.Mappings;
 using Modsen.Authors.Models;
 
-namespace Modsen.Authors.Application.Commands.GetAuthor;
+namespace Modsen.Authors.Application.Dtos;
 
 public class AuthorDetailsDto : IMapWith<Author>
 {

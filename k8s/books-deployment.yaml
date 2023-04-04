@@ -1,31 +1,31 @@
 ﻿apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authors-deployment
+  name: books-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: authorservice
+      app: bookservice
   template:
     metadata:
       labels:
-        app: authorservice
+        app: bookservice
     spec:
       containers:
-        - name: authorservice
-          image: jejikeh/modsen-authors:1.0.0
----
+        - name: bookservice
+          image: jejikeh/modsen-books:1.0.0
+--- 
 apiVersion: v1
 kind: Service
 metadata:
-  name: authors-clusterip-service
+  name: books-clusterip-service
 spec:
   type: ClusterIP
   selector:
-    app: authorservice
+    app: bookservice
   ports:
-    - name: authorservice
+    - name: bookservice
       protocol: TCP
       port: 80
       targetPort: 80

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Modsen.Authors.Application.Dtos;
 using Modsen.Authors.Application.Interfaces;
 
 namespace Modsen.Authors.Application.Commands.GetAuthor;
