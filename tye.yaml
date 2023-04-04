@@ -1,11 +1,11 @@
 name: modsen.library-api
 services:
-- name: modsen-authors
-  project: src/Modsen.Authors/Modsen.Authors.csproj
-  bindings:
-    - port: 3000
-- name: modsen-library-dev
-  external: true
-  bindings:
-    - port: 5432
-      connectionString: Host=localhost;Port=${port};Username=modsen_library_dev;Password=modsen_library_dev;
+  - name: modsen-authors
+    project: src/Modsen.Authors/Modsen.Authors.csproj
+    bindings:
+      - port: 3000
+  - name: modsen-library-dev
+    external: true
+    bindings:
+      - port: 5432
+        connectionString: Host=localhost;Port=${port};Username=modsen_library_dev;Password=modsen_library_dev;

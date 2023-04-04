@@ -1,0 +1,13 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /source
+
+COPY . .
+RUN dotnet restore "./Modsen.Authors.csproj" --disable-parallel
+RUN dotnet publish "./Modsen.Authors.csproj" -c release -o /app --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /app
+COPY --from=build-env /app ./
+
+EXPOSE 5000
+ENTRYPOINT ["dotnet", "Modsen.Authors.dll"]

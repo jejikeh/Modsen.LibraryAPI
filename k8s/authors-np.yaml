@@ -1,0 +1,13 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: authornpservice
+spec:
+  type: NodePort
+  selector:
+    app: authorservice
+  ports:
+    - name: authorservice
+      protocol: TCP
+      port: 80
+      targetPort: 80

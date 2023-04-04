@@ -1,0 +1,17 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authors-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authorservice
+  template:
+    metadata:
+      labels:
+        app: authorservice
+    spec:
+      containers:
+        - name: authorservice
+          image: jejikeh/modsen-authors:1.0.0
