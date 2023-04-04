@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Modsen.Authors.Models;
+using Modsen.Authors.Persistence.Configurations;
 
 namespace Modsen.Authors.Persistence;
 

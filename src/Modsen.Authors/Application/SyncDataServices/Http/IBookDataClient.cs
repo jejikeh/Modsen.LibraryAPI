@@ -1,6 +1,6 @@
 ﻿using Modsen.Authors.Application.Dtos;
 
-namespace Modsen.Authors.SyncDataServices.Http;
+namespace Modsen.Authors.Application.SyncDataServices.Http;
 
 public interface IBookDataClient
 {

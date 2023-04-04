@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Modsen.Authors.Models;
 
-namespace Modsen.Authors.Persistence;
+namespace Modsen.Authors.Persistence.Configurations;
 
 public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 {
