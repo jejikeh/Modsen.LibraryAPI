@@ -1,6 +1,21 @@
-﻿namespace Modsen.Books.Persistence;
+﻿using Microsoft.EntityFrameworkCore;
+using Modsen.Books.Models;
+using Modsen.Books.Persistence.Configurations;
 
-public class BookDbContext
+namespace Modsen.Books.Persistence;
+
+public class BookDbContext : DbContext
 {
-    
+    public DbSet<Book> Books { get; set; }
+
+    public BookDbContext(DbContextOptions<BookDbContext> options) : base(options)
+    {
+        
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfiguration(new BookConfiguration());
+    }
 }
