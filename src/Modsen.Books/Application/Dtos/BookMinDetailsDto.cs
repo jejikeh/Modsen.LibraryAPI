@@ -8,7 +8,7 @@ public class BookMinDetailsDto : IMapWith<Book>
 {
     public required Guid Id { get; set; }
     public required string Title { get; set; }
-    public required string Author { get; set; }
+    public required Guid AuthorId { get; set; }
 
     public void Mapping(Profile profile)
     {
@@ -20,7 +20,7 @@ public class BookMinDetailsDto : IMapWith<Book>
                 dto => dto.Title,
                 expression => expression.MapFrom(book => book.Title))
             .ForMember(
-                dto => dto.Author,
-                expression => expression.MapFrom(book => book.Author));
+                dto => dto.AuthorId,
+                expression => expression.MapFrom(book => book.AuthorId));
     }
 }

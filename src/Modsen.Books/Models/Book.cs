@@ -8,5 +8,6 @@ public class Book
     public required string Genre { get; set; }
     public required string Description { get; set; }
     public required DateTime Year { get; set; }
-    public required string Author { get; set; }
+    public Guid AuthorId { get; set; }
+    public Author? Author { get; set; }
 }

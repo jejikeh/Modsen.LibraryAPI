@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Modsen.Books.Application;
 using Modsen.Books.Application.Interfaces;
 using Modsen.Books.Models;
 
@@ -14,24 +13,51 @@ public class BookRepository : IBookRepository
         _context = context;
     }
 
+    public Task<IEnumerable<Author>> GetAllAuthors()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Author> CreateAuthor(Author author)
+    {
+        if (author is null)
+            throw new ArgumentNullException(nameof(author));
+
+        await _context.Authors.AddAsync(author);
+        return author;
+    }
+
+    public async Task<bool> AuthorExist(Guid authorId)
+    {
+        return await _context.Authors.AnyAsync(author => author.Id == authorId);
+    }
+
     public async Task<IEnumerable<Book>> GetAllBooks()
     {
         return await _context.Books.ToListAsync();
     }
 
-    public async Task<Book?> GetBookById(Guid id)
+    public IEnumerable<Book> GetAllAuthorBooks(Guid authorId)
     {
-        return await _context.Books.FirstOrDefaultAsync(book => book.Id == id);
+        return _context.Books
+            .Where(book => book.AuthorId == authorId)
+            .OrderBy(book => book.Title);
     }
 
-    public async Task CreateBook(Book book)
+    public async Task<Book?> GetBookById(Guid authorId, Guid bookId)
+    {
+        return await _context.Books.FirstOrDefaultAsync(book => book.AuthorId == authorId && book.Id == bookId);
+    }
+
+    public async Task CreateBook(Guid authorId, Book book)
     {
         if (book is null)
             throw new ArgumentNullException(nameof(book));
 
-        await _context.AddAsync(book);
+        book.AuthorId = authorId;
+        await _context.Books.AddAsync(book);
     }
-
+    
     public async Task<bool> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync() > 0;

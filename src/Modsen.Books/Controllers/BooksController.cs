@@ -9,7 +9,7 @@ using Modsen.Books.Application.Dtos;
 namespace Modsen.Books.Controllers;
 
 
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class BooksController : ControllerBase
 {
@@ -28,22 +28,17 @@ public class BooksController : ControllerBase
         if (Mediator is null)
             return BadRequest("Internal server error");
 
-        var book = await Mediator.Send(new GetBooksMinQuery());
-        return Ok(book);
+        var books = await Mediator.Send(new GetBooksMinQuery());
+        return Ok(books);
     }
     
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<BookDetailsDto>> GetBookDetails(Guid id)
+    [HttpGet]
+    public async Task<ActionResult<BookDetailsDto>> GetBookDetails([FromBody] GetBookDetailsQuery bookDetailsQuery)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
-        var book = await Mediator.Send(new GetBookDetailsQuery()
-        {
-            Id = id
-        });
-        
-        return Ok(book);
+        return Ok(await Mediator.Send(bookDetailsQuery));
     }
     
     [HttpPost]

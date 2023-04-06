@@ -20,13 +20,12 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Book>
             Id = Guid.NewGuid(),
             ISBN = request.ISBN,
             Title = request.Title,
-            Genre = request.Author,
+            Genre = request.Genre,
             Description = request.Description,
             Year = request.Year,
-            Author = request.Author
         };
 
-        await _bookRepository.CreateBook(book);
+        await _bookRepository.CreateBook(request.AuthorId, book);
         await _bookRepository.SaveChangesAsync();
         return book;
     }

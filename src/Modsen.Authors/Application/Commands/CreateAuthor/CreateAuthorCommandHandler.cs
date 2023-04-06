@@ -18,8 +18,8 @@ public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand, A
         var author = new Author()
         {
             Bio = request.Bio,
-            Born = request.Born,
-            Die = request.Die,
+            BornDate = request.Born,
+            DieDate = request.Die,
             FirstName = request.FirstName,
             Id = Guid.NewGuid(),
             LastName = request.LastName

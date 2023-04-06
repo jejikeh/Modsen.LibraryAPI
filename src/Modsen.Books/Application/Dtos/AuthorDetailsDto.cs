@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
-using Modsen.Authors.Application.Common.Mappings;
-using Modsen.Authors.Models;
+using Modsen.Books.Application.Common.Mappings;
+using Modsen.Books.Models;
 
-namespace Modsen.Authors.Application.Dtos;
+namespace Modsen.Books.Application.Dtos;
 
 public class AuthorDetailsDto : IMapWith<Author>
 {
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
-    public required DateTime Born { get; set; }
-    public DateTime? Die { get; set; }
+    public required DateTime BornDate { get; set; }
+    public DateTime? DieDate { get; set; }
     public string? Bio { get; set; }
 
     public void Mapping(Profile profile)
@@ -25,10 +25,10 @@ public class AuthorDetailsDto : IMapWith<Author>
                 dto => dto.Bio,
                 expression => expression.MapFrom(author => author.Bio))
             .ForMember(
-                dto => dto.Born,
+                dto => dto.BornDate,
                 expression => expression.MapFrom(author => author.BornDate))
             .ForMember(
-                dto => dto.Die,
+                dto => dto.DieDate,
                 expression => expression.MapFrom(author => author.DieDate));
     }
 }

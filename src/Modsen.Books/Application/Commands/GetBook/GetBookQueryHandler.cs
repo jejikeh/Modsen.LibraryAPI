@@ -18,7 +18,7 @@ public class GetBookQueryHandler : IRequestHandler<GetBookDetailsQuery, BookDeta
 
     public async Task<BookDetailsDto> Handle(GetBookDetailsQuery request, CancellationToken cancellationToken)
     {
-        var book = await _bookRepository.GetBookById(request.Id);
+        var book = await _bookRepository.GetBookById(request.AuthorId, request.Id);
         return _mapper.Map<BookDetailsDto>(book);
     }
 }

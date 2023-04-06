@@ -31,10 +31,10 @@ namespace Modsen.Authors.Migrations
                     b.Property<string>("Bio")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Born")
+                    b.Property<DateTime>("BornDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime?>("Die")
+                    b.Property<DateTime?>("DieDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")

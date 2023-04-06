@@ -4,13 +4,13 @@ using Modsen.Books.Models;
 
 namespace Modsen.Books.Persistence.Configurations;
 
-public class BookConfiguration : IEntityTypeConfiguration<Book>
+public class AuthorConfiguration : IEntityTypeConfiguration<Author>
 {
-    public void Configure(EntityTypeBuilder<Book> builder)
+    public void Configure(EntityTypeBuilder<Author> builder)
     {
         builder
-            .HasOne(book => book.Author)
-            .WithMany(author => author.Books)
+            .HasMany(author => author.Books)
+            .WithOne(book => book.Author)
             .HasForeignKey(book => book.Id);
     }
 }

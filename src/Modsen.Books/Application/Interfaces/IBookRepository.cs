@@ -4,8 +4,15 @@ namespace Modsen.Books.Application.Interfaces;
 
 public interface IBookRepository
 {
+    // Author related
+    public Task<IEnumerable<Author>> GetAllAuthors();
+    public Task<Author> CreateAuthor(Author author);
+    public Task<bool> AuthorExist(Guid authorId);
+    
+    // Book related
     public Task<IEnumerable<Book>> GetAllBooks();
-    public Task<Book?> GetBookById(Guid id);
-    public Task CreateBook(Book book);
+    public IEnumerable<Book> GetAllAuthorBooks(Guid authorId);
+    public Task<Book?> GetBookById(Guid authorId, Guid bookId);
+    public Task CreateBook(Guid authorId, Book book);
     public Task<bool> SaveChangesAsync();
 }

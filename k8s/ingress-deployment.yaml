@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  rules:
+   - host: modsen-library.com
+     http:
+      paths:
+        - path: /api/authors
+          pathType: Prefix
+          backend:
+            service:
+              name: authors-clusterip-service
+              port:
+                number: 80
+        - path: /api/books
+          pathType: Prefix
+          backend:
+            service:
+              name: books-clusterip-service
+              port:
+                number: 80
