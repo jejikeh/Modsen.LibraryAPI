@@ -9,15 +9,15 @@ using Modsen.Books.Application.Dtos;
 namespace Modsen.Books.Controllers;
 
 
-[Route("api/authors/{authorId:guid}/books")]
+[Route("api/authors/{authorId:guid}/[controller]")]
 [ApiController]
-public class AuthorBooksController : ControllerBase
+public class BooksController : ControllerBase
 {
     private readonly IMapper _mapper;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
     
-    public AuthorBooksController(IMapper mapper)
+    public BooksController(IMapper mapper)
     {
         _mapper = mapper;
     }
