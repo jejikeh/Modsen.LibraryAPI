@@ -35,21 +35,19 @@ public class EventProcessor : IEventProcessor
 
     private async void AddAuthor(string authorPublishedMessage)
     {
-        // TODO: inject here mediatr
         _logger.LogInformation("--> Author started added process!");
         
         using var scope = _serviceScopeFactory.CreateScope();
-        var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
         var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
         
         var authorPublishedDto = JsonSerializer.Deserialize<AuthorPublishedDto>(authorPublishedMessage);
         var author = _mapper.Map<Author>(authorPublishedDto);
-        if (await authorRepository.ExternalAuthorExist(author.ExternalId))
+        if (await authorRepository.ExternalAuthorExist(authorPublishedDto.Id))
             return;
         
         author.Id = Guid.NewGuid();
         await authorRepository.CreateAuthor(author);
-        await bookRepository.SaveChangesAsync();
+        await authorRepository.SaveChangesAsync();
         
         _logger.LogInformation("--> Author added!");
     }

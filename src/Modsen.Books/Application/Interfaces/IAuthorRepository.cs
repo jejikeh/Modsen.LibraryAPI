@@ -8,4 +8,5 @@ public interface IAuthorRepository
     public Task<Author> CreateAuthor(Author author);
     public Task<bool> AuthorExist(Guid authorId);
     public Task<bool> ExternalAuthorExist(Guid externalAuthorId);
+    public Task<bool> SaveChangesAsync();
 }

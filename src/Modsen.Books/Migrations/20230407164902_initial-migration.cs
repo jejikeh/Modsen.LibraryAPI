@@ -29,7 +29,7 @@ namespace Modsen.Books.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ISBN = table.Column<string>(type: "text", nullable: false),
+                    ISBN = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Genre = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
@@ -51,6 +51,12 @@ namespace Modsen.Books.Migrations
                 name: "IX_Books_AuthorId",
                 table: "Books",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_Id_AuthorId",
+                table: "Books",
+                columns: new[] { "Id", "AuthorId" },
+                unique: true);
         }
 
         /// <inheritdoc />

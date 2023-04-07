@@ -36,4 +36,9 @@ public class AuthorRepository : IAuthorRepository
     {
         return await _context.Authors.AnyAsync(author => author.ExternalId == externalAuthorId);
     }
+    
+    public async Task<bool> SaveChangesAsync()
+    {
+        return await _context.SaveChangesAsync() > 0;
+    }
 }

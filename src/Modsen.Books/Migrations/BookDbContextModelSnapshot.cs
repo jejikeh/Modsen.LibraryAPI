@@ -59,7 +59,8 @@ namespace Modsen.Books.Migrations
 
                     b.Property<string>("ISBN")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -71,6 +72,9 @@ namespace Modsen.Books.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("Id", "AuthorId")
+                        .IsUnique();
 
                     b.ToTable("Books");
                 });

@@ -7,13 +7,11 @@ namespace Modsen.Books.Application.Commands.GetAuthors;
 
 public class GetAuthorsQueryHandler : IRequestHandler<GetAuthorsQuery, IEnumerable<AuthorDetailsDto>>
 {
-    private readonly IBookRepository _bookRepository;
     private readonly IMapper _mapper;
     private readonly IAuthorRepository _authorRepository;
 
-    public GetAuthorsQueryHandler(IBookRepository bookRepository, IMapper mapper, IAuthorRepository authorRepository)
+    public GetAuthorsQueryHandler(IMapper mapper, IAuthorRepository authorRepository)
     {
-        _bookRepository = bookRepository;
         _mapper = mapper;
         _authorRepository = authorRepository;
     }

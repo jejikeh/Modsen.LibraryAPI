@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Modsen.Books.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20230407001155_initial-migration")]
+    [Migration("20230407164902_initial-migration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -62,7 +62,8 @@ namespace Modsen.Books.Migrations
 
                     b.Property<string>("ISBN")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(13)
+                        .HasColumnType("character varying(13)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -74,6 +75,9 @@ namespace Modsen.Books.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("Id", "AuthorId")
+                        .IsUnique();
 
                     b.ToTable("Books");
                 });
