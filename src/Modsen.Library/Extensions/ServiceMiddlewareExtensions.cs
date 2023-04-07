@@ -26,6 +26,13 @@ public static class ServiceMiddlewareExtensions
                 Type = SecuritySchemeType.ApiKey
             });
             
+            options.SwaggerDoc("v1", new OpenApiInfo()
+            {
+                Version = "v1",
+                Title = "Modsen Library",
+                Description = "An ASP.NET Web api for library service"
+            });
+
             options.OperationFilter<SecurityRequirementsOperationFilter>();
         });
         

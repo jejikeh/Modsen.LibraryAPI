@@ -53,7 +53,6 @@ public class UserRepository : IUserRepository
     public async Task DeleteUser(Guid id)
     {
         var user = await GetUserById(id);
-        
         if (user is null)
             return;
         

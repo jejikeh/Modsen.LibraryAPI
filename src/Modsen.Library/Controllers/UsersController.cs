@@ -14,6 +14,9 @@ using Modsen.Library.Models;
 
 namespace Modsen.Library.Controllers;
 
+/// <summary>
+/// Controller for login, register, show info about users
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -28,6 +31,10 @@ public class UsersController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Get Information about authorize user
+    /// </summary>
+    /// <returns>user information</returns>
     [HttpGet("/Account")]
     [Authorize]
     public async Task<ActionResult<UserDetailsDto>> Account()
@@ -44,6 +51,11 @@ public class UsersController : ControllerBase
         return Ok(userInfo);
     }
 
+    /// <summary>
+    /// Authorize endpoint
+    /// </summary>
+    /// <param name="userLoginDto">login data</param>
+    /// <returns>JWT Token</returns>
     [HttpPost("/Login")]
     public async Task<ActionResult<string>> Login([FromBody] UserLoginDto userLoginDto)
     {
@@ -60,7 +72,11 @@ public class UsersController : ControllerBase
 
         return Ok(GenerateToken(user));
     }
-
+    
+    /// <summary>
+    /// Get All user accounts info
+    /// </summary>
+    /// <returns>List with all accounts</returns>
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<IEnumerable<UserDetailsDto>>> GetAllUsers()
@@ -71,6 +87,11 @@ public class UsersController : ControllerBase
         return Ok(await Mediator.Send(new GetUsersCommand()));
     }
 
+    /// <summary>
+    /// Create new account
+    /// </summary>
+    /// <param name="createUserCommand">account data</param>
+    /// <returns>account data</returns>
     [HttpPost("/Register")]
     public async Task<ActionResult<UserDetailsDto>> Register([FromBody] CreateUserCommand createUserCommand)
     {

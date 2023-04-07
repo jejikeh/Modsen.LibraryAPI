@@ -15,6 +15,9 @@ using Modsen.Library.Services.DataClient;
 
 namespace Modsen.Library.Controllers;
 
+/// <summary>
+/// Endpoint Wrapper to internal modsen-authors service
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class AuthorsController : ControllerBase
@@ -31,6 +34,10 @@ public class AuthorsController : ControllerBase
         _authorDataClient = authorDataClient;
     }
 
+    /// <summary>
+    /// Fetch authors data from the author service
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<IEnumerable<Author>>> GetAllAuthors()
