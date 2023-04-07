@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Modsen.Authors.Migrations
 {
     [DbContext(typeof(AuthorDbContext))]
-    [Migration("20230407001021_initial-migration")]
+    [Migration("20230407164813_initial-migration")]
     partial class initialmigration
     {
         /// <inheritdoc />

@@ -25,7 +25,7 @@ public class AuthorsController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AuthorDetailsDto>>> GetAllAuthorMin()
+    public async Task<ActionResult<IEnumerable<AuthorDetailsDto>>> GetAllAuthors()
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
