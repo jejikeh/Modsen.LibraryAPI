@@ -25,6 +25,7 @@ public class CreateAuthorCommandHandler : IRequestHandler<CreateAuthorCommand, A
             LastName = request.LastName
         };
 
+        
         await _authorRepository.CreateAuthor(author);
         await _authorRepository.SaveChangesAsync();
         return author;

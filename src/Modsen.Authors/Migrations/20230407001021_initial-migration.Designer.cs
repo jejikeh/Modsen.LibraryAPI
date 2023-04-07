@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Modsen.Authors.Migrations
 {
     [DbContext(typeof(AuthorDbContext))]
-    [Migration("20230403165637_initial-migration")]
+    [Migration("20230407001021_initial-migration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -32,13 +32,12 @@ namespace Modsen.Authors.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Bio")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Born")
+                    b.Property<DateTime>("BornDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("Die")
+                    b.Property<DateTime?>("DieDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FirstName")

@@ -3,6 +3,7 @@ using Modsen.Authors.Application;
 using Modsen.Authors.Application.Common.Mappings;
 using Modsen.Authors.Application.Interfaces;
 using Modsen.Authors.Persistence;
+using Modsen.Authors.Services;
 
 namespace Modsen.Authors.Extensions;
 
@@ -22,6 +23,7 @@ public static class ServiceMiddlewareExtensions
         });
         
         builder.Services
+            .AddServices()
             .AddApplication()
             .AddPersistence(builder.Configuration);
         

@@ -9,7 +9,6 @@ public static class ApplicationInjection
     public static IServiceCollection AddApplication(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-        serviceCollection.AddHttpClient<IBookDataClient, HttpBookDataClient>();
         return serviceCollection;
     }
 }

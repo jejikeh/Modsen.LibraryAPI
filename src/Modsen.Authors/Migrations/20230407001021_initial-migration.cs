@@ -18,9 +18,9 @@ namespace Modsen.Authors.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
                     LastName = table.Column<string>(type: "character varying(280)", maxLength: 280, nullable: false),
-                    Born = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Die = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Bio = table.Column<string>(type: "text", nullable: false)
+                    BornDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DieDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Bio = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

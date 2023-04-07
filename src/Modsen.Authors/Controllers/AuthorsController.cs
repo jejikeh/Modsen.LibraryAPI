@@ -6,6 +6,7 @@ using Modsen.Authors.Application.Commands.GetAuthor;
 using Modsen.Authors.Application.Commands.GetAuthors;
 using Modsen.Authors.Application.Dtos;
 using Modsen.Authors.Application.SyncDataServices.Http;
+using Modsen.Authors.Services.RabbitMQ;
 
 namespace Modsen.Authors.Controllers;
 
@@ -15,22 +16,24 @@ public class AuthorsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IBookDataClient _bookDataClient;
+    private IMessageBusClient _messageBusClient;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
     
-    public AuthorsController(IMapper mapper, IBookDataClient bookDataClient)
+    public AuthorsController(IMapper mapper, IBookDataClient bookDataClient, IMessageBusClient messageBusClient)
     {
         _mapper = mapper;
         _bookDataClient = bookDataClient;
+        _messageBusClient = messageBusClient;
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AuthorMinDetailsDto>>> GetAllAuthorMin()
+    public async Task<ActionResult<IEnumerable<AuthorDetailsDto>>> GetAllAuthorMin()
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
-        var authors = await Mediator.Send(new GetAuthorsMinQuery());
+        var authors = await Mediator.Send(new GetAuthorsQuery());
         return Ok(authors);
     }
     
@@ -56,15 +59,11 @@ public class AuthorsController : ControllerBase
 
         var author = await Mediator.Send(createAuthorCommand);
         var authorDto = _mapper.Map<AuthorDetailsDto>(author);
-        try
-        {
-            await _bookDataClient.SendAuthorToBook(authorDto);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"--> Could not send post: {ex.Message}");
-        }
 
+        var platformPublishDto = _mapper.Map<AuthorPublishDto>(authorDto);
+        platformPublishDto.Event = "Author_Published";
+        _messageBusClient.PublishNewAuthor(platformPublishDto);
+        
         return Ok(_mapper.Map<AuthorDetailsDto>(author));
     }
 }
