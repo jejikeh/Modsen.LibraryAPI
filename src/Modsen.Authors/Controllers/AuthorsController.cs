@@ -5,7 +5,6 @@ using Modsen.Authors.Application.Commands.CreateAuthor;
 using Modsen.Authors.Application.Commands.GetAuthor;
 using Modsen.Authors.Application.Commands.GetAuthors;
 using Modsen.Authors.Application.Dtos;
-using Modsen.Authors.Application.SyncDataServices.Http;
 using Modsen.Authors.Services.RabbitMQ;
 
 namespace Modsen.Authors.Controllers;
@@ -15,15 +14,13 @@ namespace Modsen.Authors.Controllers;
 public class AuthorsController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private readonly IBookDataClient _bookDataClient;
     private IMessageBusClient _messageBusClient;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
     
-    public AuthorsController(IMapper mapper, IBookDataClient bookDataClient, IMessageBusClient messageBusClient)
+    public AuthorsController(IMapper mapper, IMessageBusClient messageBusClient)
     {
         _mapper = mapper;
-        _bookDataClient = bookDataClient;
         _messageBusClient = messageBusClient;
     }
     

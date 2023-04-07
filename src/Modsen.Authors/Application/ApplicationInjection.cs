@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Modsen.Authors.Application.SyncDataServices.Http;
 
 namespace Modsen.Authors.Application;
 
