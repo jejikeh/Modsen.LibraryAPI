@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Modsen.Books.Application.Dtos;
 using Modsen.Books.Models;
 
 namespace Modsen.Books.Application.Commands.CreateBook;
 
-public class CreateBookCommand : IRequest<Book>
+public class CreateBookCommand : IRequest<BookDetailsDto>
 {
     public required string ISBN { get; set; }
     public required string Title { get; set; }

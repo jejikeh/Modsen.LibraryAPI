@@ -1,19 +1,23 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using Modsen.Books.Application.Dtos;
 using Modsen.Books.Application.Interfaces;
 using Modsen.Books.Models;
 
 namespace Modsen.Books.Application.Commands.CreateBook;
 
-public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Book>
+public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookDetailsDto>
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IMapper _mapper;
 
-    public CreateBookCommandHandler(IBookRepository bookRepository)
+    public CreateBookCommandHandler(IBookRepository bookRepository, IMapper mapper)
     {
         _bookRepository = bookRepository;
+        _mapper = mapper;
     }
 
-    public async Task<Book> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+    public async Task<BookDetailsDto> Handle(CreateBookCommand request, CancellationToken cancellationToken)
     {
         var book = new Book
         {
@@ -27,6 +31,6 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, Book>
 
         await _bookRepository.CreateBook(request.AuthorId, book);
         await _bookRepository.SaveChangesAsync();
-        return book;
+        return _mapper.Map<BookDetailsDto>(book);
     }
 }
