@@ -30,6 +30,11 @@ public class BookRepository : IBookRepository
         return await _context.Books.FirstOrDefaultAsync(book => book.AuthorId == authorId && book.Id == bookId);
     }
 
+    public async Task<Book?> GetBookByISBN(string isbn)
+    {
+        return await _context.Books.FirstOrDefaultAsync(book => book.ISBN == isbn);
+    }
+
     public async Task CreateBook(Guid authorId, Book book)
     {
         if (book is null)
