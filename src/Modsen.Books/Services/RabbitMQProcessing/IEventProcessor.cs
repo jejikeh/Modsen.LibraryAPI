@@ -1,4 +1,4 @@
-﻿namespace Modsen.Books.Services.EventProcessing;
+﻿namespace Modsen.Books.Services.RabbitMQProcessing;
 
 public interface IEventProcessor
 {

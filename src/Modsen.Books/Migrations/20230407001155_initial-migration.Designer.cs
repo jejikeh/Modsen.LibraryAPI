@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Modsen.Books.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20230406230022_main")]
-    partial class main
+    [Migration("20230407001155_initial-migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,6 +46,7 @@ namespace Modsen.Books.Migrations
             modelBuilder.Entity("Modsen.Books.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorId")
@@ -72,6 +73,8 @@ namespace Modsen.Books.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Books");
                 });
 
@@ -79,7 +82,7 @@ namespace Modsen.Books.Migrations
                 {
                     b.HasOne("Modsen.Books.Models.Author", "Author")
                         .WithMany("Books")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

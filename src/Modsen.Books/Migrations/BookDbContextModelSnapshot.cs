@@ -28,23 +28,10 @@ namespace Modsen.Books.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Bio")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("BornDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DieDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LastName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -56,6 +43,7 @@ namespace Modsen.Books.Migrations
             modelBuilder.Entity("Modsen.Books.Models.Book", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("AuthorId")
@@ -82,6 +70,8 @@ namespace Modsen.Books.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Books");
                 });
 
@@ -89,7 +79,7 @@ namespace Modsen.Books.Migrations
                 {
                     b.HasOne("Modsen.Books.Models.Author", "Author")
                         .WithMany("Books")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

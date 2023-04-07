@@ -18,5 +18,6 @@ public class BookDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new BookConfiguration());
+        modelBuilder.ApplyConfiguration(new AuthorConfiguration());
     }
 }

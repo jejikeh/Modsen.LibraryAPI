@@ -1,48 +1,53 @@
 ﻿using System.Text.Json;
 using AutoMapper;
 using MediatR;
-using Modsen.Books.Application.Commands.CreateAuthor;
 using Modsen.Books.Application.Dtos;
 using Modsen.Books.Application.Interfaces;
 using Modsen.Books.Models;
 
-namespace Modsen.Books.Services.EventProcessing;
+namespace Modsen.Books.Services.RabbitMQProcessing;
 
 public class EventProcessor : IEventProcessor
 {
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly ILogger<EventProcessor> _logger;
     private readonly IMapper _mapper;
-    private IMediator _mediator;
 
-    public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper, IMediator mediator)
+    public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper, IMediator mediator, ILogger<EventProcessor> logger)
     {
         _serviceScopeFactory = serviceScopeFactory;
         _mapper = mapper;
-        _mediator = mediator;
+        _logger = logger;
     }
     
     public void ProcessEvent(string message)
     {
+        _logger.LogInformation("--> Determining Event");
         var eventType = DetermineEvent(message);
 
         switch (eventType)
         {
             case EventType.PlatformPublished:
-                
+                AddAuthor(message);
                 break;
         }
     }
 
-    private void AddAuthor(string authorPublishedMessage)
+    private async void AddAuthor(string authorPublishedMessage)
     {
+        _logger.LogInformation("--> Author started added process!");
         using var scope = _serviceScopeFactory.CreateScope();
-        var repository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
+        var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
         var authorPublishedDto = JsonSerializer.Deserialize<AuthorPublishedDto>(authorPublishedMessage);
-        var author = _mapper.Map<Author>(authorPublishedMessage);
-        _mediator.Send(new CreateAuthorRequest()
-        {
-            Author = author
-        });
+        var author = _mapper.Map<Author>(authorPublishedDto);
+        if (await bookRepository.ExternalAuthorExist(author.ExternalId))
+            return;
+        
+        author.Id = Guid.NewGuid();
+        await bookRepository.CreateAuthor(author);
+        await bookRepository.SaveChangesAsync();
+        
+        _logger.LogInformation("--> Author added!");
     }
 
     private EventType DetermineEvent(string notificationMessage)

@@ -8,6 +8,7 @@ public interface IBookRepository
     public Task<IEnumerable<Author>> GetAllAuthors();
     public Task<Author> CreateAuthor(Author author);
     public Task<bool> AuthorExist(Guid authorId);
+    public Task<bool> ExternalAuthorExist(Guid externalAuthorId);
     
     // Book related
     public Task<IEnumerable<Book>> GetAllBooks();

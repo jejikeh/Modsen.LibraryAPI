@@ -13,9 +13,9 @@ public class BookRepository : IBookRepository
         _context = context;
     }
 
-    public Task<IEnumerable<Author>> GetAllAuthors()
+    public async Task<IEnumerable<Author>> GetAllAuthors()
     {
-        throw new NotImplementedException();
+        return await _context.Authors.ToListAsync();
     }
 
     public async Task<Author> CreateAuthor(Author author)
@@ -30,6 +30,11 @@ public class BookRepository : IBookRepository
     public async Task<bool> AuthorExist(Guid authorId)
     {
         return await _context.Authors.AnyAsync(author => author.Id == authorId);
+    }
+
+    public async Task<bool> ExternalAuthorExist(Guid externalAuthorId)
+    {
+        return await _context.Authors.AnyAsync(author => author.ExternalId == externalAuthorId);
     }
 
     public async Task<IEnumerable<Book>> GetAllBooks()

@@ -4,6 +4,7 @@ using Modsen.Books.Application.Common.Mappings;
 using Modsen.Books.Application.Interfaces;
 using Modsen.Books.Controllers;
 using Modsen.Books.Persistence;
+using Modsen.Books.Services;
 
 namespace Modsen.Books.Extensions;
 
@@ -11,7 +12,6 @@ public static class ServiceMiddlewareExtensions
 {
     public static WebApplicationBuilder RegisterServiceMiddleware(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<AuthorsController>>());
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();   
@@ -21,10 +21,11 @@ public static class ServiceMiddlewareExtensions
             config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
             config.AddProfile(new AssemblyMappingProfile(typeof(IBookRepository).Assembly));
         });
-        
+
         builder.Services
             .AddApplication()
-            .AddPersistence(builder.Configuration);
+            .AddPersistence(builder.Configuration)
+            .AddServices();
         
         builder.Services.AddCors(options =>
             options.AddPolicy("AllowAll", policy =>

@@ -2,52 +2,68 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Modsen.Books.Application.Commands.CreateBook;
-using Modsen.Books.Application.Commands.GetBook;
-using Modsen.Books.Application.Commands.GetBooks;
+using Modsen.Books.Application.Commands.GetAuthorBook;
+using Modsen.Books.Application.Commands.GetAuthorBooks;
 using Modsen.Books.Application.Dtos;
 
 namespace Modsen.Books.Controllers;
 
 
-[Route("api/[controller]/[action]")]
+[Route("api/authors/{authorId:guid}/[controller]")]
 [ApiController]
 public class BooksController : ControllerBase
 {
     private readonly IMapper _mapper;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-
+    
     public BooksController(IMapper mapper)
     {
         _mapper = mapper;
     }
     
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BookMinDetailsDto>>> GetAllBooksMin()
+    public async Task<ActionResult<IEnumerable<BookDetailsDto>>> GetAuthorBooks(Guid authorId)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
-
-        var books = await Mediator.Send(new GetBooksMinQuery());
-        return Ok(books);
+        
+        return Ok( await Mediator.Send(new GetAuthorBooksQuery()
+        {
+            AuthorId = authorId
+        }));
     }
     
-    [HttpGet]
-    public async Task<ActionResult<BookDetailsDto>> GetBookDetails([FromBody] GetBookDetailsQuery bookDetailsQuery)
+    [HttpGet("{bookId:guid}", Name = "GetAuthorBook")]
+    public async Task<ActionResult<BookDetailsDto>> GetAuthorBook(Guid authorId, Guid bookId)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
-        return Ok(await Mediator.Send(bookDetailsQuery));
+        return Ok(await Mediator.Send(new GetAuthorBookDetailsQuery()
+        {
+            BookId = bookId,
+            AuthorId = authorId
+        }));
     }
     
     [HttpPost]
-    public async Task<ActionResult<BookDetailsDto>> Create([FromBody] CreateBookCommand createBookCommand)
+    public async Task<ActionResult<BookDetailsDto>> CreateBook(Guid authorId, [FromBody] CreateBookDto createBookDto)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
-        var book = await Mediator.Send(createBookCommand);
-        return Ok(_mapper.Map<BookDetailsDto>(book));
+        var book = await Mediator.Send(new CreateBookCommand()
+        {
+            AuthorId = authorId,
+            Description = createBookDto.Description,
+            Genre = createBookDto.Genre,
+            ISBN = createBookDto.ISBN,
+            Title = createBookDto.Genre,
+            Year = createBookDto.Year
+        });
+
+        var bookDetails = _mapper.Map<BookDetailsDto>(book);
+        return CreatedAtRoute(nameof(GetAuthorBook), new { authorId, book.Id }, bookDetails);
     }
 }

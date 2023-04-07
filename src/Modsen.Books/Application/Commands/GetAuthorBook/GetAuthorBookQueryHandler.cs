@@ -1,25 +1,33 @@
 ﻿using AutoMapper;
 using MediatR;
-using Modsen.Books.Application.Commands.GetBook;
+using Modsen.Books.Application.Common.Exceptions;
 using Modsen.Books.Application.Dtos;
 using Modsen.Books.Application.Interfaces;
+using Modsen.Books.Models;
 
 namespace Modsen.Books.Application.Commands.GetAuthorBook;
 
-public class GetBookQueryHandler : IRequestHandler<GetAuthorBookDetailsQuery, BookDetailsDto>
+public class GetAuthorBookQueryHandler : IRequestHandler<GetAuthorBookDetailsQuery, BookDetailsDto>
 {
-    private readonly IAppRepository _appRepository;
+    private readonly IBookRepository _bookRepository;
     private readonly IMapper _mapper;
 
-    public GetBookQueryHandler(IAppRepository appRepository, IMapper mapper)
+    public GetAuthorBookQueryHandler(IBookRepository bookRepository, IMapper mapper)
     {
-        _appRepository = appRepository;
+        _bookRepository = bookRepository;
         _mapper = mapper;
     }
 
     public async Task<BookDetailsDto> Handle(GetAuthorBookDetailsQuery request, CancellationToken cancellationToken)
     {
-        var book = await _appRepository.GetBookById(request.Id);
+        if (!await _bookRepository.AuthorExist(request.AuthorId))
+            throw new NotFoundException<Author>(nameof(request.AuthorId));
+        
+        var book = await _bookRepository.GetBookById(request.AuthorId, request.BookId);
+        
+        if(book is null)
+            throw new NotFoundException<Book>(nameof(request.BookId));
+
         return _mapper.Map<BookDetailsDto>(book);
     }
 }
