@@ -1,12 +1,14 @@
 ﻿using System.Reflection;
-using Modsen.Books.Application;
-using Modsen.Books.Application.Common.Mappings;
-using Modsen.Books.Application.Interfaces;
-using Modsen.Books.Controllers;
-using Modsen.Books.Persistence;
-using Modsen.Books.Services;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Modsen.Library.Application;
+using Modsen.Library.Application.Common.Mappings;
+using Modsen.Library.Application.Interfaces;
+using Modsen.Library.Configuration;
+using Modsen.Library.Persistence;
+using Swashbuckle.AspNetCore.Filters;
 
-namespace Modsen.Books.Extensions;
+namespace Modsen.Library.Extensions;
 
 public static class ServiceMiddlewareExtensions
 {
@@ -14,18 +16,40 @@ public static class ServiceMiddlewareExtensions
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();   
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
+            {
+                In = ParameterLocation.Header,
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+            
+            options.OperationFilter<SecurityRequirementsOperationFilter>();
+        });
+        
+        builder.Services
+            .AddApplication()
+            .AddPersistence(builder.Configuration);
+        
+        builder.Services
+            .AddAuthentication()
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    IssuerSigningKey = AuthConfiguration.GetSymmetricSecurityKeyStatic()
+                };
+            });
 
         builder.Services.AddAutoMapper(config =>
         {
             config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
-            config.AddProfile(new AssemblyMappingProfile(typeof(IBookRepository).Assembly));
+            config.AddProfile(new AssemblyMappingProfile(typeof(IUserRepository).Assembly));
         });
-
-        builder.Services
-            .AddApplication()
-            .AddPersistence(builder.Configuration)
-            .AddServices();
         
         builder.Services.AddCors(options =>
             options.AddPolicy("AllowAll", policy =>
@@ -44,7 +68,7 @@ public static class ServiceMiddlewareExtensions
         var serviceProvider = scope.ServiceProvider;
         try
         {
-            var authorDbContext = serviceProvider.GetRequiredService<BookDbContext>();
+            var authorDbContext = serviceProvider.GetRequiredService<LibraryDbContext>();
             authorDbContext.Database.EnsureCreated();
         }
         catch (Exception ex)

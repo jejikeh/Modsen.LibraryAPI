@@ -1,6 +1,8 @@
-﻿namespace Modsen.Library.Application.Commands.DeleteUser;
+﻿using MediatR;
 
-public class GetUserCommand
+namespace Modsen.Library.Application.Commands.DeleteUser;
+
+public class DeleteUserCommand : IRequest
 {
-    public Guid 
+    public required Guid UserId { get; set; }
 }

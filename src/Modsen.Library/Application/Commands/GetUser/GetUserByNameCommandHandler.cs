@@ -1,29 +1,25 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Modsen.Library.Application.Common.Exceptions;
-using Modsen.Library.Application.Dtos;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Models;
 
 namespace Modsen.Library.Application.Commands.GetUser;
 
-public class GetUserByIdCommandHandler : IRequestHandler<GetUserByIdCommand, UserDetailsDto>
+public class GetUserByNameCommandHandler : IRequestHandler<GetUserByNameCommand, User>
 {
     private readonly IUserRepository _userRepository;
-    private readonly IMapper _mapper;
 
-    public GetUserByIdCommandHandler(IUserRepository userRepository, IMapper mapper)
+    public GetUserByNameCommandHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        _mapper = mapper;
     }
 
-    public async Task<UserDetailsDto> Handle(GetUserByIdCommand request, CancellationToken cancellationToken)
+    public async Task<User> Handle(GetUserByNameCommand request, CancellationToken cancellationToken)
     {
-        if (!await _userRepository.UserExist(request.Id))
-            throw new NotFoundException<User>(nameof(request.Id));
-
-        var user = await _userRepository.GetUserById(request.Id);
-        return _mapper.Map<UserDetailsDto>(user);
+        var user = await _userRepository.GetUserByName(request.Name);
+        if (user is null)
+            throw new NotFoundException<User>(nameof(request.Name));
+        
+        return user;
     }
 }

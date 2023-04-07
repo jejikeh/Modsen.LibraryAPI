@@ -1,6 +1,11 @@
-﻿namespace Modsen.Library.Application.Commands.CreateUser;
+﻿using MediatR;
+using Modsen.Library.Models;
 
-public class CreateUserCommand
+namespace Modsen.Library.Application.Commands.CreateUser;
+
+public class CreateUserCommand : IRequest<User>
 {
-    
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
+    public required string Password { get; set; }
 }

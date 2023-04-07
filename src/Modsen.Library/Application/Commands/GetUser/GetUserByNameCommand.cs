@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Modsen.Library.Application.Dtos;
+using Modsen.Library.Models;
 
 namespace Modsen.Library.Application.Commands.GetUser;
 
-public class GetUserByIdCommand : IRequest<UserDetailsDto>
+public class GetUserByNameCommand : IRequest<User>
 {
-    public required Guid Id { get; set; }
+    public required string Name { get; set; }
 }

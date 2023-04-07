@@ -1,4 +1,4 @@
-﻿namespace Modsen.Books.Application.Common.Exceptions;
+﻿namespace Modsen.Library.Application.Common.Exceptions;
 
 public class NotFoundException<T> : Exception
 {

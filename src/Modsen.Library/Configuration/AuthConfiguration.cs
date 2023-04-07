@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Modsen.Library.AuthConfiguration;
+namespace Modsen.Library.Configuration;
 
 public static class AuthConfiguration
 {

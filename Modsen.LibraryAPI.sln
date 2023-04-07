@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modsen.Authors", "src\Modse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modsen.Books", "src\Modsen.Books\Modsen.Books.csproj", "{FF17DCD1-02E8-4440-9E57-7FBFC29AE195}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modsen.Library", "src\Modsen.Library\Modsen.Library.csproj", "{8BAE098A-65E7-402C-ACA9-6971039BF950}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +16,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{5220F07D-DD35-4187-93EA-0447A02E3AE1} = {94038BC1-DF0A-42C9-8095-A877B267A259}
 		{FF17DCD1-02E8-4440-9E57-7FBFC29AE195} = {94038BC1-DF0A-42C9-8095-A877B267A259}
+		{8BAE098A-65E7-402C-ACA9-6971039BF950} = {94038BC1-DF0A-42C9-8095-A877B267A259}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{5220F07D-DD35-4187-93EA-0447A02E3AE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +27,9 @@ Global
 		{FF17DCD1-02E8-4440-9E57-7FBFC29AE195}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF17DCD1-02E8-4440-9E57-7FBFC29AE195}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF17DCD1-02E8-4440-9E57-7FBFC29AE195}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BAE098A-65E7-402C-ACA9-6971039BF950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BAE098A-65E7-402C-ACA9-6971039BF950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BAE098A-65E7-402C-ACA9-6971039BF950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BAE098A-65E7-402C-ACA9-6971039BF950}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

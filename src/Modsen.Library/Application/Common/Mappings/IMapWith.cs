@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Modsen.Books.Application.Common.Mappings;
+namespace Modsen.Library.Application.Common.Mappings;
 
 public interface IMapWith<T>
 {

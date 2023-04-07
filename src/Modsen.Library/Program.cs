@@ -1,6 +1,19 @@
+using Modsen.Library.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.RegisterServiceMiddleware();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
+app.UseHttpsRedirection();
+app.UseAuthorization();
+app.MapControllers();
+app.UseCors("AllowAll");
+app.InitializeServiceContextProvider();
 app.Run();
