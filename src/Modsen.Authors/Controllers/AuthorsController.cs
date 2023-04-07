@@ -2,14 +2,19 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Modsen.Authors.Application.Commands.CreateAuthor;
+using Modsen.Authors.Application.Commands.DeleteAuthor;
 using Modsen.Authors.Application.Commands.GetAuthor;
 using Modsen.Authors.Application.Commands.GetAuthors;
+using Modsen.Authors.Application.Commands.UpdateAuthor;
 using Modsen.Authors.Application.Dtos;
 using Modsen.Authors.Services.RabbitMQ;
 
 namespace Modsen.Authors.Controllers;
 
-[Route("api/[controller]")]
+/// <summary>
+/// Author service endpoints
+/// </summary>
+[Route("api/[controller]/[action]")]
 [ApiController]
 public class AuthorsController : ControllerBase
 {
@@ -24,6 +29,10 @@ public class AuthorsController : ControllerBase
         _messageBusClient = messageBusClient;
     }
     
+    /// <summary>
+    /// Get all authors
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AuthorDetailsDto>>> GetAllAuthors()
     {
@@ -34,6 +43,11 @@ public class AuthorsController : ControllerBase
         return Ok(authors);
     }
     
+    /// <summary>
+    /// Get detail information about author
+    /// </summary>
+    /// <param name="id">Id of the author</param>
+    /// <returns>Author information</returns>
     [HttpGet("{id:guid}", Name = "GetAuthorDetails")]
     public async Task<ActionResult<AuthorDetailsDto>> GetAuthorDetails(Guid id)
     {
@@ -48,6 +62,11 @@ public class AuthorsController : ControllerBase
         return Ok(authors);
     }
     
+    /// <summary>
+    /// Create and Publish Author to message bus
+    /// </summary>
+    /// <param name="createAuthorCommand">author information</param>
+    /// <returns>Author information</returns>
     [HttpPost]
     public async Task<ActionResult<AuthorDetailsDto>> CreateAuthor([FromBody] CreateAuthorCommand createAuthorCommand)
     {
@@ -61,6 +80,44 @@ public class AuthorsController : ControllerBase
         platformPublishDto.Event = "Author_Published";
         _messageBusClient.PublishNewAuthor(platformPublishDto);
         
-        return Ok(_mapper.Map<AuthorDetailsDto>(author));
+        return Ok(authorDto);
+    }
+
+    /// <summary>
+    /// Update existing author
+    /// </summary>
+    /// <param name="updateAuthorCommand">Updated fields</param>
+    /// <returns></returns>
+    [HttpPut]
+    public async Task<ActionResult<AuthorDetailsDto>> UpdateAuthor([FromBody] UpdateAuthorCommand updateAuthorCommand)
+    {
+        if (Mediator is null)
+            return BadRequest("Internal server error");
+
+        var updatedAuthor = await Mediator.Send(updateAuthorCommand);
+        var platformPublishDto = _mapper.Map<AuthorPublishDto>(updatedAuthor);
+        platformPublishDto.Event = "Author_Updated";
+        _messageBusClient.PublishUpdateAuthor(platformPublishDto);
+
+        return Ok(updatedAuthor);
+    }
+
+    /// <summary>
+    /// Update existing author
+    /// </summary>
+    /// <param name="deleteAuthorCommand"></param>
+    /// <returns></returns>
+    [HttpDelete]
+    public async Task<ActionResult<AuthorDetailsDto>> DeleteAuthor([FromBody] DeleteAuthorCommand deleteAuthorCommand)
+    {
+        if (Mediator is null)
+            return BadRequest("Internal server error");
+
+        await Mediator.Send(deleteAuthorCommand);
+        var platformPublishDto = _mapper.Map<AuthorDeleteDto>(deleteAuthorCommand);
+        platformPublishDto.Event = "Author_Deleted";
+        _messageBusClient.PublishDeleteAuthor(platformPublishDto);
+
+        return Ok(deleteAuthorCommand);
     }
 }

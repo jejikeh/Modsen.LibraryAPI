@@ -47,7 +47,7 @@ public class MessageBusClient : IMessageBusClient, IDisposable
 
         if (_connection.IsOpen)
         {
-            _logger.LogInformation("Pushing actorPublishDto to the message bus...");
+            _logger.LogInformation("Pushing create actorPublishDto to the message bus...");
             SendMessage(message);
         }
         else
@@ -55,7 +55,35 @@ public class MessageBusClient : IMessageBusClient, IDisposable
             _logger.LogError("Unable to push, RabbitMq connection is closed.");
         }
     }
-    
+
+    public void PublishUpdateAuthor(AuthorPublishDto authorPublishDto)
+    {
+        var message = JsonSerializer.Serialize(authorPublishDto);
+
+        if (_connection.IsOpen)
+        {
+            _logger.LogInformation("Pushing update actorPublishDto to the message bus...");
+            SendMessage(message);
+        }
+        else
+        {
+            _logger.LogError("Unable to push, RabbitMq connection is closed.");
+        }
+    }
+
+    public void PublishDeleteAuthor(AuthorDeleteDto authorDeleteDto)
+    {
+        var message = JsonSerializer.Serialize(authorDeleteDto);
+
+        if (_connection.IsOpen)
+        {
+            _logger.LogInformation("Pushing author delete id to the message bus...");
+            SendMessage(message);
+        }
+        else
+            _logger.LogError("Unable to push, RabbitMq connection is closed.");
+    }
+
     private void SendMessage(string message)
     {
         var body = Encoding.UTF8.GetBytes(message);
