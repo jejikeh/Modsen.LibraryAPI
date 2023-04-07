@@ -8,7 +8,7 @@ public class UserRepository : IUserRepository
 {
     private readonly LibraryDbContext _context;
 
-     UserRepository(LibraryDbContext dbContext)
+    protected UserRepository(LibraryDbContext dbContext)
     {
         _context = dbContext;
     }
