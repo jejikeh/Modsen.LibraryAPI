@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Modsen.Books.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20230407164902_initial-migration")]
-    partial class initialmigration
+    [Migration("20230407224730_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

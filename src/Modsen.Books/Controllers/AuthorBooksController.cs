@@ -5,6 +5,7 @@ using Modsen.Books.Application.Commands.CreateBook;
 using Modsen.Books.Application.Commands.GetAuthorBook;
 using Modsen.Books.Application.Commands.GetAuthorBooks;
 using Modsen.Books.Application.Dtos;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Modsen.Books.Controllers;
 
@@ -22,6 +23,7 @@ public class AuthorBooksController : ControllerBase
         _mapper = mapper;
     }
     
+    [SwaggerOperation(Summary = "Get all books from author by ID")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BookDetailsDto>>> GetAuthorBooks(Guid authorId)
     {
@@ -34,7 +36,8 @@ public class AuthorBooksController : ControllerBase
         }));
     }
     
-    [HttpGet("{bookId:guid}", Name = "GetAuthorBook")]
+    [SwaggerOperation(Summary = "Get details of book from author")]
+    [HttpGet("{bookId:guid}")]
     public async Task<ActionResult<BookDetailsDto>> GetAuthorBook(Guid authorId, Guid bookId)
     {
         if (Mediator is null)
@@ -47,6 +50,8 @@ public class AuthorBooksController : ControllerBase
         }));
     }
     
+    [SwaggerOperation(Summary = "Create book from author")]
+    [SwaggerResponse(200, "Returns Book Details Model")]
     [HttpPost]
     public async Task<ActionResult<BookDetailsDto>> CreateBook(Guid authorId, [FromBody] CreateBookDto createBookDto)
     {
@@ -59,10 +64,10 @@ public class AuthorBooksController : ControllerBase
             Description = createBookDto.Description,
             Genre = createBookDto.Genre,
             ISBN = createBookDto.ISBN,
-            Title = createBookDto.Genre,
+            Title = createBookDto.Title,
             Year = createBookDto.Year
         });
 
-        return CreatedAtRoute(nameof(GetAuthorBook), new { authorId, book.Id }, book);
+        return Ok(_mapper.Map<BookDetailsDto>(book));
     }
 }

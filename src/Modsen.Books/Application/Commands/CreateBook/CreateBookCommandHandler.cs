@@ -9,12 +9,14 @@ namespace Modsen.Books.Application.Commands.CreateBook;
 public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookDetailsDto>
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IAuthorRepository _authorRepository;
     private readonly IMapper _mapper;
 
-    public CreateBookCommandHandler(IBookRepository bookRepository, IMapper mapper)
+    public CreateBookCommandHandler(IBookRepository bookRepository, IMapper mapper, IAuthorRepository authorRepository)
     {
         _bookRepository = bookRepository;
         _mapper = mapper;
+        _authorRepository = authorRepository;
     }
 
     public async Task<BookDetailsDto> Handle(CreateBookCommand request, CancellationToken cancellationToken)
@@ -30,6 +32,7 @@ public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookD
         };
 
         await _bookRepository.CreateBook(request.AuthorId, book);
+        await _authorRepository.AddBookToAuthor(request.AuthorId, book);
         await _bookRepository.SaveChangesAsync();
         return _mapper.Map<BookDetailsDto>(book);
     }

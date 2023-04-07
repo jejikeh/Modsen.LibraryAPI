@@ -14,8 +14,11 @@ public static class ServiceMiddlewareExtensions
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();   
-
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.EnableAnnotations();
+        });
+        
         builder.Services.AddAutoMapper(config =>
         {
             config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));

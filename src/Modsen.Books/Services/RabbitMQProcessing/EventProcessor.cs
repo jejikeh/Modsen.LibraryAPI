@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 using AutoMapper;
-using MediatR;
 using Modsen.Books.Application.Dtos;
 using Modsen.Books.Application.Interfaces;
 using Modsen.Books.Models;
@@ -27,8 +26,14 @@ public class EventProcessor : IEventProcessor
 
         switch (eventType)
         {
-            case EventType.PlatformPublished:
+            case EventType.AuthorPublished:
                 AddAuthor(message);
+                break;
+            case EventType.AuthorDeleted:
+                DeleteAuthor(message);
+                break;
+            case EventType.AuthorUpdated:
+                UpdateAuthor(message);
                 break;
         }
     }
@@ -51,13 +56,50 @@ public class EventProcessor : IEventProcessor
         
         _logger.LogInformation("--> Author added!");
     }
+    
+    private async void UpdateAuthor(string authorPublishedMessage)
+    {
+        _logger.LogInformation("--> Author started update process!");
+        
+        using var scope = _serviceScopeFactory.CreateScope();
+        var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
+        
+        var authorDto = JsonSerializer.Deserialize<AuthorPublishedDto>(authorPublishedMessage);
+        var author = _mapper.Map<Author>(authorDto);
+        if (!await authorRepository.ExternalAuthorExist(author.Id))
+            return;
+        
+        await authorRepository.UpdateAuthor(author);
+        await authorRepository.SaveChangesAsync();
+        
+        _logger.LogInformation("--> Author updated!");
+    }
+    
+    private async void DeleteAuthor(string authorPublishedMessage)
+    {
+        _logger.LogInformation("--> Author started delete process!");
+        
+        using var scope = _serviceScopeFactory.CreateScope();
+        var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
+        
+        var authorDeletedId = JsonSerializer.Deserialize<AuthorDeleteDto>(authorPublishedMessage);
+        if (!await authorRepository.ExternalAuthorExist(authorDeletedId.Id))
+            return;
+        
+        await authorRepository.DeleteAuthorByExternalId(authorDeletedId.Id);
+        await authorRepository.SaveChangesAsync();
+        
+        _logger.LogInformation("--> Author deleted!");
+    }
 
     private EventType DetermineEvent(string notificationMessage)
     {
         var eventType = JsonSerializer.Deserialize<GenericEventDto>(notificationMessage);
         return eventType?.Event switch
         {
-            "Author_Published" => EventType.PlatformPublished,
+            "Author_Published" => EventType.AuthorPublished,
+            "Author_Updated" => EventType.AuthorUpdated,
+            "Author_Deleted" => EventType.AuthorDeleted,
             _ => EventType.Undetermined
         };
     }
@@ -65,6 +107,8 @@ public class EventProcessor : IEventProcessor
 
 enum EventType
 {
-    PlatformPublished,
+    AuthorPublished,
+    AuthorUpdated,
+    AuthorDeleted,
     Undetermined
 }
