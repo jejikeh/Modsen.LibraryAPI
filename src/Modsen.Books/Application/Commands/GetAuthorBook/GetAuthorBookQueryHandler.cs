@@ -10,17 +10,19 @@ namespace Modsen.Books.Application.Commands.GetAuthorBook;
 public class GetAuthorBookQueryHandler : IRequestHandler<GetAuthorBookDetailsQuery, BookDetailsDto>
 {
     private readonly IBookRepository _bookRepository;
+    private readonly IAuthorRepository _authorRepository;
     private readonly IMapper _mapper;
 
-    public GetAuthorBookQueryHandler(IBookRepository bookRepository, IMapper mapper)
+    public GetAuthorBookQueryHandler(IBookRepository bookRepository, IMapper mapper, IAuthorRepository authorRepository)
     {
         _bookRepository = bookRepository;
         _mapper = mapper;
+        _authorRepository = authorRepository;
     }
 
     public async Task<BookDetailsDto> Handle(GetAuthorBookDetailsQuery request, CancellationToken cancellationToken)
     {
-        if (!await _bookRepository.AuthorExist(request.AuthorId))
+        if (!await _authorRepository.AuthorExist(request.AuthorId))
             throw new NotFoundException<Author>(nameof(request.AuthorId));
         
         var book = await _bookRepository.GetBookById(request.AuthorId, request.BookId);

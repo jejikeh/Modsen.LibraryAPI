@@ -9,16 +9,18 @@ public class GetAuthorsQueryHandler : IRequestHandler<GetAuthorsQuery, IEnumerab
 {
     private readonly IBookRepository _bookRepository;
     private readonly IMapper _mapper;
+    private readonly IAuthorRepository _authorRepository;
 
-    public GetAuthorsQueryHandler(IBookRepository bookRepository, IMapper mapper)
+    public GetAuthorsQueryHandler(IBookRepository bookRepository, IMapper mapper, IAuthorRepository authorRepository)
     {
         _bookRepository = bookRepository;
         _mapper = mapper;
+        _authorRepository = authorRepository;
     }
 
     public async Task<IEnumerable<AuthorDetailsDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
-        var authors = await _bookRepository.GetAllAuthors();
+        var authors = await _authorRepository.GetAllAuthors();
         return _mapper.Map<IEnumerable<AuthorDetailsDto>>(authors);
     }
 }

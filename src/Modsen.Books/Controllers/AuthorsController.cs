@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Modsen.Books.Application.Commands.GetAuthors;
 using Modsen.Books.Application.Dtos;
-using Modsen.Books.Application.Interfaces;
 
 namespace Modsen.Books.Controllers;
 
@@ -31,12 +30,5 @@ public class AuthorsController : ControllerBase
             return BadRequest("Internal server error");
         
         return Ok(await Mediator.Send(new GetAuthorsQuery()));
-    }
-
-    [HttpPost]
-    public ActionResult TaskInboundConnection()
-    {
-        _logger.LogInformation("--> Inbound POST # Command service ");
-        return Ok("Inbound test of from");
     }
 }

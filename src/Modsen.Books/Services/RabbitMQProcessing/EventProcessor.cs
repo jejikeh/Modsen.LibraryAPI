@@ -13,7 +13,7 @@ public class EventProcessor : IEventProcessor
     private readonly ILogger<EventProcessor> _logger;
     private readonly IMapper _mapper;
 
-    public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper, IMediator mediator, ILogger<EventProcessor> logger)
+    public EventProcessor(IServiceScopeFactory serviceScopeFactory, IMapper mapper, ILogger<EventProcessor> logger)
     {
         _serviceScopeFactory = serviceScopeFactory;
         _mapper = mapper;
@@ -35,16 +35,20 @@ public class EventProcessor : IEventProcessor
 
     private async void AddAuthor(string authorPublishedMessage)
     {
+        // TODO: inject here mediatr
         _logger.LogInformation("--> Author started added process!");
+        
         using var scope = _serviceScopeFactory.CreateScope();
         var bookRepository = scope.ServiceProvider.GetRequiredService<IBookRepository>();
+        var authorRepository = scope.ServiceProvider.GetRequiredService<IAuthorRepository>();
+        
         var authorPublishedDto = JsonSerializer.Deserialize<AuthorPublishedDto>(authorPublishedMessage);
         var author = _mapper.Map<Author>(authorPublishedDto);
-        if (await bookRepository.ExternalAuthorExist(author.ExternalId))
+        if (await authorRepository.ExternalAuthorExist(author.ExternalId))
             return;
         
         author.Id = Guid.NewGuid();
-        await bookRepository.CreateAuthor(author);
+        await authorRepository.CreateAuthor(author);
         await bookRepository.SaveChangesAsync();
         
         _logger.LogInformation("--> Author added!");

@@ -21,6 +21,8 @@ public static class PersistenceInjection
         );
         
         serviceCollection.AddScoped<IBookRepository, BookRepository>();
+        serviceCollection.AddScoped<IAuthorRepository, AuthorRepository>();
+
         return serviceCollection;
     } 
 }
