@@ -6,6 +6,7 @@ using Modsen.Library.Application.Common.Mappings;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Configuration;
 using Modsen.Library.Persistence;
+using Modsen.Library.Services;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace Modsen.Library.Extensions;
@@ -29,6 +30,7 @@ public static class ServiceMiddlewareExtensions
         });
         
         builder.Services
+            .AddServices()
             .AddApplication()
             .AddPersistence(builder.Configuration);
         

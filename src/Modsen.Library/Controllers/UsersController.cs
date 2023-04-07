@@ -14,7 +14,7 @@ using Modsen.Library.Models;
 
 namespace Modsen.Library.Controllers;
 
-[Route("api/users/[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
 {
@@ -28,7 +28,8 @@ public class UsersController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet]
+    [HttpGet("/Account")]
+    [Authorize]
     public async Task<ActionResult<UserDetailsDto>> Account()
     {
         var userId = HttpContext.User.FindFirstValue("UserId");
@@ -43,8 +44,8 @@ public class UsersController : ControllerBase
         return Ok(userInfo);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<string>> Login(UserLoginDto userLoginDto)
+    [HttpPost("/Login")]
+    public async Task<ActionResult<string>> Login([FromBody] UserLoginDto userLoginDto)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
@@ -70,7 +71,7 @@ public class UsersController : ControllerBase
         return Ok(await Mediator.Send(new GetUsersCommand()));
     }
 
-    [HttpPost]
+    [HttpPost("/Register")]
     public async Task<ActionResult<UserDetailsDto>> Register([FromBody] CreateUserCommand createUserCommand)
     {
         if (Mediator is null)

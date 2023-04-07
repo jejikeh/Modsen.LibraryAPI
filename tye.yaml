@@ -8,6 +8,10 @@ services:
     project: src/Modsen.Books/Modsen.Books.csproj
     bindings:
       - port: 4000
+  - name: modsen-library
+    project: src/Modsen.Library/Modsen.Library.csproj
+    bindings:
+      - port: 5000
   - name: rabbit
     image: rabbitmq:3-management
     bindings:

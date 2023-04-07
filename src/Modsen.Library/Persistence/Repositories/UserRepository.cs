@@ -8,7 +8,7 @@ public class UserRepository : IUserRepository
 {
     private readonly LibraryDbContext _context;
 
-    protected UserRepository(LibraryDbContext dbContext)
+    public UserRepository(LibraryDbContext dbContext)
     {
         _context = dbContext;
     }
@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetUserByName(string name)
     {
-        return await _context.Users.FirstOrDefaultAsync(user => name == $"{user.FirstName} {user.LastName}");
+        return await _context.Users.FirstOrDefaultAsync(user => name == user.FirstName + " " + user.LastName);
     }
 
     public async Task AddUser(User user)
