@@ -8,6 +8,11 @@ services:
     project: src/Modsen.Books/Modsen.Books.csproj
     bindings:
       - port: 4000
+  - name: rabbit
+    image: rabbitmq:3-management
+    bindings:
+      - protocol: amqp
+        port: 5672
   - name: modsen-library-dev
     external: true
     bindings:

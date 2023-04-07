@@ -5,7 +5,7 @@ using Modsen.Authors.Application.Interfaces;
 
 namespace Modsen.Authors.Application.Commands.GetAuthors;
 
-public class GetAuthorsMinQueryHandler : IRequestHandler<GetAuthorsMinQuery, IEnumerable<AuthorMinDetailsDto>>
+public class GetAuthorsMinQueryHandler : IRequestHandler<GetAuthorsQuery, IEnumerable<AuthorMinDetailsDto>>
 {
     private readonly IAuthorRepository _authorRepository;
     private readonly IMapper _mapper;
@@ -16,7 +16,7 @@ public class GetAuthorsMinQueryHandler : IRequestHandler<GetAuthorsMinQuery, IEn
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AuthorMinDetailsDto>> Handle(GetAuthorsMinQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<AuthorMinDetailsDto>> Handle(GetAuthorsQuery request, CancellationToken cancellationToken)
     {
         var authors = await _authorRepository.GetAllAuthors();
         return _mapper.Map<IEnumerable<AuthorMinDetailsDto>>(authors);
