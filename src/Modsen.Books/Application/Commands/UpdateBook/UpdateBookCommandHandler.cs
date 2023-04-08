@@ -1,39 +1,42 @@
 ﻿using AutoMapper;
 using MediatR;
+using Modsen.Books.Application.Common.Exceptions;
 using Modsen.Books.Application.Dtos;
 using Modsen.Books.Application.Interfaces;
 using Modsen.Books.Models;
 
-namespace Modsen.Books.Application.Commands.CreateBook;
+namespace Modsen.Books.Application.Commands.UpdateBook;
 
-public class CreateBookCommandHandler : IRequestHandler<CreateBookCommand, BookDetailsDto>
+public class UpdateBookCommandHandler : IRequestHandler<UpdateBookCommand, BookDetailsDto>
 {
     private readonly IBookRepository _bookRepository;
-    private readonly IAuthorRepository _authorRepository;
     private readonly IMapper _mapper;
 
-    public CreateBookCommandHandler(IBookRepository bookRepository, IMapper mapper, IAuthorRepository authorRepository)
+    public UpdateBookCommandHandler(IBookRepository bookRepository, IMapper mapper)
     {
         _bookRepository = bookRepository;
         _mapper = mapper;
-        _authorRepository = authorRepository;
     }
 
-    public async Task<BookDetailsDto> Handle(CreateBookCommand request, CancellationToken cancellationToken)
+    public async Task<BookDetailsDto> Handle(UpdateBookCommand request, CancellationToken cancellationToken)
     {
-        var book = new Book
+        var book = await _bookRepository.GetBookById(request.Id);
+        if(book is null)
+            throw new NotFoundException<Book>(nameof(request.Id));
+
+        var updatedBook = new Book
         {
-            Id = Guid.NewGuid(),
-            ISBN = request.ISBN,
-            Title = request.Title,
-            Genre = request.Genre,
-            Description = request.Description,
-            Year = request.Year,
+            Id = request.Id,
+            AuthorId = request.AuthorId,
+            ISBN = request.ISBN ?? book.ISBN,
+            Title = request.Title ?? book.Title,
+            Genre = request.Genre ?? book.Genre,
+            Description = request.Description ?? book.Description,
+            Year = request.Year ?? book.Year,
         };
 
-        await _bookRepository.CreateBook(request.AuthorId, book);
-        await _authorRepository.AddBookToAuthor(request.AuthorId, book);
+        await _bookRepository.UpdateBook(updatedBook);
         await _bookRepository.SaveChangesAsync();
-        return _mapper.Map<BookDetailsDto>(book);
+        return _mapper.Map<BookDetailsDto>(updatedBook);
     }
 }
