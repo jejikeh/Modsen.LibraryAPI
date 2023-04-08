@@ -25,7 +25,7 @@ public class GetAuthorBookQueryHandler : IRequestHandler<GetAuthorBookDetailsQue
         if (!await _authorRepository.AuthorExist(request.AuthorId))
             throw new NotFoundException<Author>(nameof(request.AuthorId));
         
-        var book = await _bookRepository.GetBookById(request.AuthorId, request.BookId);
+        var book = await _bookRepository.GetBookByAuthorIdAndBookId(request.AuthorId, request.BookId);
         
         if(book is null)
             throw new NotFoundException<Book>(nameof(request.BookId));

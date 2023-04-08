@@ -25,7 +25,12 @@ public class BookRepository : IBookRepository
             .OrderBy(book => book.Title);
     }
 
-    public async Task<Book?> GetBookById(Guid authorId, Guid bookId)
+    public async Task<Book?> GetBookById(Guid bookId)
+    {
+        return await _context.Books.FirstOrDefaultAsync(book => book.Id == bookId);
+    }
+    
+    public async Task<Book?> GetBookByAuthorIdAndBookId(Guid authorId, Guid bookId)
     {
         return await _context.Books.FirstOrDefaultAsync(book => book.AuthorId == authorId && book.Id == bookId);
     }
@@ -33,6 +38,28 @@ public class BookRepository : IBookRepository
     public async Task<Book?> GetBookByISBN(string isbn)
     {
         return await _context.Books.FirstOrDefaultAsync(book => book.ISBN == isbn);
+    }
+
+    public async Task UpdateBook(Book book)
+    {
+        var updateBook = await GetBookById(book.Id);
+        if (updateBook is null)
+            return;
+
+        updateBook.ISBN = book.ISBN;
+        updateBook.Title = book.Title;
+        updateBook.Description = book.Description;
+        updateBook.Genre = book.Genre;
+        updateBook.Year = book.Year;
+    }
+
+    public async Task DeleteBook(Guid id)
+    {
+        var book = await GetBookById(id);
+        if (book is null)
+            return;
+
+        _context.Remove(book);
     }
 
     public async Task CreateBook(Guid authorId, Book book)
