@@ -21,7 +21,7 @@ public class AuthorDataClient : IAuthorDataClient
 
     public async Task<IEnumerable<Author>> GetAllAuthors()
     {
-        var request = await _httpClient.GetAsync(_configuration.GetServiceUri("modsen-authors") + "api/authors/");
+        var request = await _httpClient.GetAsync(_configuration.GetServiceUri("modsen-authors") + "api/Authors/GetAllAuthors");
         if (request.IsSuccessStatusCode)
         {
             _logger.LogInformation("Sync Get request to author service was successful");

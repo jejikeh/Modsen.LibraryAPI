@@ -34,6 +34,7 @@ public static class ServiceMiddlewareExtensions
             });
 
             options.OperationFilter<SecurityRequirementsOperationFilter>();
+            options.EnableAnnotations();
         });
         
         builder.Services

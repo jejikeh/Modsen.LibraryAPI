@@ -11,6 +11,7 @@ using Modsen.Library.Application.Commands.GetUsers;
 using Modsen.Library.Application.Dtos;
 using Modsen.Library.Configuration;
 using Modsen.Library.Models;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Modsen.Library.Controllers;
 
@@ -30,12 +31,9 @@ public class UsersController : ControllerBase
         _mapper = mapper;
         _mediator = mediator;
     }
-
-    /// <summary>
-    /// Get Information about authorize user
-    /// </summary>
-    /// <returns>user information</returns>
-    [HttpGet("/Account")]
+    
+    [SwaggerOperation(Summary = "Get Information about authorize user")]
+    [HttpGet("Account")]
     [Authorize]
     public async Task<ActionResult<UserDetailsDto>> Account()
     {
@@ -51,12 +49,8 @@ public class UsersController : ControllerBase
         return Ok(userInfo);
     }
 
-    /// <summary>
-    /// Authorize endpoint
-    /// </summary>
-    /// <param name="userLoginDto">login data</param>
-    /// <returns>JWT Token</returns>
-    [HttpPost("/Login")]
+    [SwaggerOperation(Summary = "Authorize endpoint")]
+    [HttpPost("Login")]
     public async Task<ActionResult<string>> Login([FromBody] UserLoginDto userLoginDto)
     {
         if (Mediator is null)
@@ -64,7 +58,7 @@ public class UsersController : ControllerBase
 
         var user = await Mediator.Send(new GetUserByNameCommand()
         {
-            Name = userLoginDto.Name
+            Name = userLoginDto.FirstName + " " + userLoginDto.LastName
         });
 
         if (!BCrypt.Net.BCrypt.Verify(userLoginDto.Password, user.PasswordHash))
@@ -73,10 +67,7 @@ public class UsersController : ControllerBase
         return Ok(GenerateToken(user));
     }
     
-    /// <summary>
-    /// Get All user accounts info
-    /// </summary>
-    /// <returns>List with all accounts</returns>
+    [SwaggerOperation(Summary = "Get All user accounts info")]
     [HttpGet]
     [Authorize]
     public async Task<ActionResult<IEnumerable<UserDetailsDto>>> GetAllUsers()
@@ -87,12 +78,8 @@ public class UsersController : ControllerBase
         return Ok(await Mediator.Send(new GetUsersCommand()));
     }
 
-    /// <summary>
-    /// Create new account
-    /// </summary>
-    /// <param name="createUserCommand">account data</param>
-    /// <returns>account data</returns>
-    [HttpPost("/Register")]
+    [SwaggerOperation(Summary = "Create new account")]
+    [HttpPost("Register")]
     public async Task<ActionResult<UserDetailsDto>> Register([FromBody] CreateUserCommand createUserCommand)
     {
         if (Mediator is null)
