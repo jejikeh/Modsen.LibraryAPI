@@ -14,7 +14,10 @@ public static class ServiceMiddlewareExtensions
         builder.Services.AddLogging();
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.EnableAnnotations();
+        });
         
         builder.Services.AddAutoMapper(config =>
         {

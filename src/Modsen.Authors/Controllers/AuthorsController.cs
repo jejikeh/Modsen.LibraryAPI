@@ -8,6 +8,7 @@ using Modsen.Authors.Application.Commands.GetAuthors;
 using Modsen.Authors.Application.Commands.UpdateAuthor;
 using Modsen.Authors.Application.Dtos;
 using Modsen.Authors.Services.RabbitMQ;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Modsen.Authors.Controllers;
 
@@ -29,10 +30,7 @@ public class AuthorsController : ControllerBase
         _messageBusClient = messageBusClient;
     }
     
-    /// <summary>
-    /// Get all authors
-    /// </summary>
-    /// <returns></returns>
+    [SwaggerOperation(Summary = "Get all authors")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AuthorDetailsDto>>> GetAllAuthors()
     {
@@ -43,12 +41,8 @@ public class AuthorsController : ControllerBase
         return Ok(authors);
     }
     
-    /// <summary>
-    /// Get detail information about author
-    /// </summary>
-    /// <param name="id">Id of the author</param>
-    /// <returns>Author information</returns>
-    [HttpGet("{id:guid}", Name = "GetAuthorDetails")]
+    [SwaggerOperation(Summary = "Get detail information about author")]
+    [HttpGet("{id:guid}")]
     public async Task<ActionResult<AuthorDetailsDto>> GetAuthorDetails(Guid id)
     {
         if (Mediator is null)
@@ -62,11 +56,7 @@ public class AuthorsController : ControllerBase
         return Ok(authors);
     }
     
-    /// <summary>
-    /// Create and Publish Author to message bus
-    /// </summary>
-    /// <param name="createAuthorCommand">author information</param>
-    /// <returns>Author information</returns>
+    [SwaggerOperation(Summary = "Create author")]
     [HttpPost]
     public async Task<ActionResult<AuthorDetailsDto>> CreateAuthor([FromBody] CreateAuthorCommand createAuthorCommand)
     {
@@ -82,18 +72,24 @@ public class AuthorsController : ControllerBase
         
         return Ok(authorDto);
     }
-
-    /// <summary>
-    /// Update existing author
-    /// </summary>
-    /// <param name="updateAuthorCommand">Updated fields</param>
-    /// <returns></returns>
-    [HttpPut]
-    public async Task<ActionResult<AuthorDetailsDto>> UpdateAuthor([FromBody] UpdateAuthorCommand updateAuthorCommand)
+    
+    [SwaggerOperation(Summary = "Update existing author")]
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<AuthorDetailsDto>> UpdateAuthor(Guid id, [FromBody] UpdateAuthorDto updateAuthorDto)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
+        var updateAuthorCommand = new UpdateAuthorCommand()
+        {
+            Id = id,
+            Bio = updateAuthorDto.Bio,
+            Born = updateAuthorDto.Born,
+            Die = updateAuthorDto.Die,
+            FirstName = updateAuthorDto.FirstName,
+            LastName = updateAuthorDto.LastName
+        };
+        
         var updatedAuthor = await Mediator.Send(updateAuthorCommand);
         var platformPublishDto = _mapper.Map<AuthorPublishDto>(updatedAuthor);
         platformPublishDto.Event = "Author_Updated";
@@ -101,18 +97,18 @@ public class AuthorsController : ControllerBase
 
         return Ok(updatedAuthor);
     }
-
-    /// <summary>
-    /// Update existing author
-    /// </summary>
-    /// <param name="deleteAuthorCommand"></param>
-    /// <returns></returns>
-    [HttpDelete]
-    public async Task<ActionResult<AuthorDetailsDto>> DeleteAuthor([FromBody] DeleteAuthorCommand deleteAuthorCommand)
+    
+    [SwaggerOperation(Summary = "Delete author by Id")]
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<AuthorDetailsDto>> DeleteAuthor(Guid id)
     {
         if (Mediator is null)
             return BadRequest("Internal server error");
 
+        var deleteAuthorCommand = new DeleteAuthorCommand()
+        {
+            Id = id
+        };
         await Mediator.Send(deleteAuthorCommand);
         var platformPublishDto = _mapper.Map<AuthorDeleteDto>(deleteAuthorCommand);
         platformPublishDto.Event = "Author_Deleted";
