@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Modsen.Library.Application.Commands.User.CreateUser;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Models;
 

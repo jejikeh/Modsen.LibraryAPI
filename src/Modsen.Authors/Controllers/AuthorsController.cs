@@ -20,7 +20,7 @@ namespace Modsen.Authors.Controllers;
 public class AuthorsController : ControllerBase
 {
     private readonly IMapper _mapper;
-    private IMessageBusClient _messageBusClient;
+    private readonly IMessageBusClient _messageBusClient;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
     
@@ -109,6 +109,7 @@ public class AuthorsController : ControllerBase
         {
             Id = id
         };
+        
         await Mediator.Send(deleteAuthorCommand);
         var platformPublishDto = _mapper.Map<AuthorDeleteDto>(deleteAuthorCommand);
         platformPublishDto.Event = "Author_Deleted";
