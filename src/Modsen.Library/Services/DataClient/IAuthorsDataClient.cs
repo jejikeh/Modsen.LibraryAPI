@@ -2,7 +2,7 @@
 
 namespace Modsen.Library.Services.DataClient;
 
-public interface IAuthorDataClient
+public interface IAuthorsDataClient
 {
     public Task<IEnumerable<Author>> GetAllAuthors();
 }

@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using MediatR;
+using Modsen.Library.Application.Commands.GetUser;
 using Modsen.Library.Application.Common.Exceptions;
 using Modsen.Library.Application.Dtos;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Models;
 
-namespace Modsen.Library.Application.Commands.GetUser;
+namespace Modsen.Library.Application.Commands.Users.GetUser;
 
 public class GetUserByIdCommandHandler : IRequestHandler<GetUserByIdCommand, UserDetailsDto>
 {

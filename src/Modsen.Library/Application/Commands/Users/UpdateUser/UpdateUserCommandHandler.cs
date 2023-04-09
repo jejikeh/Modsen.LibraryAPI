@@ -5,7 +5,7 @@ using Modsen.Library.Application.Dtos;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Models;
 
-namespace Modsen.Library.Application.Commands.UpdateUser;
+namespace Modsen.Library.Application.Commands.Users.UpdateUser;
 
 public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDetailsDto>
 {

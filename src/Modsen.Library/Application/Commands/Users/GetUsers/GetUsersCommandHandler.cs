@@ -3,7 +3,7 @@ using MediatR;
 using Modsen.Library.Application.Dtos;
 using Modsen.Library.Application.Interfaces;
 
-namespace Modsen.Library.Application.Commands.GetUsers;
+namespace Modsen.Library.Application.Commands.Users.GetUsers;
 
 public class GetUsersCommandHandler : IRequestHandler<GetUsersCommand, IEnumerable<UserDetailsDto>>
 {

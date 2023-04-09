@@ -2,7 +2,8 @@
 
 namespace Modsen.Library.Services.DataClient;
 
-public interface IBooksClient
+public interface IBooksDataClient
 {
     public Task<IEnumerable<Book>> GetAllBooks();
+    public Task<Book> GetBookByISBN(string isbn);
 }

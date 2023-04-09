@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Modsen.Library.Application.Commands.User.CreateUser;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Models;
 
-namespace Modsen.Library.Application.Commands.CreateUser;
+namespace Modsen.Library.Application.Commands.Users.CreateUser;
 
 public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, User>
 {

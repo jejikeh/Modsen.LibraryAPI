@@ -6,7 +6,8 @@ public static class ServiceInjection
 {
     public static IServiceCollection AddServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddHttpClient<IAuthorDataClient, AuthorDataClient>();
+        serviceCollection.AddHttpClient<IAuthorsDataClient, AuthorsDataClient>();
+        serviceCollection.AddHttpClient<IBooksDataClient, BooksDataClient>();
         return serviceCollection;
     }
 }

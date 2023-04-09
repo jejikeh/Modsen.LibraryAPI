@@ -1,6 +1,9 @@
-﻿namespace Modsen.Library.Application.Commands.BookRents.GetUserBookRents;
+﻿using MediatR;
+using Modsen.Library.Models;
 
-public class GetUserBookRentsCommand
+namespace Modsen.Library.Application.Commands.BookRents.GetUserBookRents;
+
+public class GetUserBookRentsCommand : IRequest<IEnumerable<BookRent>>
 {
-    
+    public required Guid UserId { get; set; }
 }

@@ -7,6 +7,7 @@ namespace Modsen.Library.Persistence;
 public class LibraryDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<BookRent> BookRents { get; set; }
 
     public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
     {
@@ -17,5 +18,6 @@ public class LibraryDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new BookRentConfiguration());
     }
 }

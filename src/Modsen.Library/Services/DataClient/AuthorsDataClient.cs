@@ -5,14 +5,13 @@ using Modsen.Library.Models;
 
 namespace Modsen.Library.Services.DataClient;
 
-public class AuthorsesDataClient : IAuthorsDataClient
+public class AuthorsDataClient : IAuthorsDataClient
 {
     private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
-    private readonly ILogger<AuthorsesDataClient> _logger;
-
-
-    public AuthorsesDataClient(HttpClient httpClient, IConfiguration configuration, ILogger<AuthorsesDataClient> logger)
+    private readonly ILogger<AuthorsDataClient> _logger;
+    
+    public AuthorsDataClient(HttpClient httpClient, IConfiguration configuration, ILogger<AuthorsDataClient> logger)
     {
         _httpClient = httpClient;
         _configuration = configuration;

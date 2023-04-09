@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Modsen.Library.Application.Interfaces;
+using Modsen.Library.Models;
 using Modsen.Library.Persistence.Repositories;
 
 namespace Modsen.Library.Persistence;
@@ -20,6 +21,7 @@ public static class PersistenceInjection
         );
         
         serviceCollection.AddScoped<IUserRepository, UserRepository>();
+        serviceCollection.AddScoped<IBookRentRepository, BookRentRepository>();
         return serviceCollection;
     } 
 }

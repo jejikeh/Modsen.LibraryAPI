@@ -1,8 +1,7 @@
 ﻿using MediatR;
-using Modsen.Library.Application.Dtos;
 using Modsen.Library.Models;
 
-namespace Modsen.Library.Application.Commands.GetUser;
+namespace Modsen.Library.Application.Commands.Users.GetUser;
 
 public class GetUserByNameCommand : IRequest<User>
 {

@@ -3,7 +3,7 @@ using Modsen.Library.Application.Common.Exceptions;
 using Modsen.Library.Application.Interfaces;
 using Modsen.Library.Models;
 
-namespace Modsen.Library.Application.Commands.DeleteUser;
+namespace Modsen.Library.Application.Commands.Users.DeleteUser;
 
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {

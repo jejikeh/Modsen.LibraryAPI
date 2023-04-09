@@ -2,5 +2,5 @@
 
 public class DeleteBookRentDto
 {
-    
+    public Guid Id { get; set; }
 }

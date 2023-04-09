@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Modsen.Library.Application.Commands.DeleteUser;
+namespace Modsen.Library.Application.Commands.Users.DeleteUser;
 
 public class DeleteUserCommand : IRequest
 {

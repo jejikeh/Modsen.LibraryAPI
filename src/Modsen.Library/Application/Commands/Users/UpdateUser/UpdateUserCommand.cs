@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Modsen.Library.Application.Dtos;
 
-namespace Modsen.Library.Application.Commands.UpdateUser;
+namespace Modsen.Library.Application.Commands.Users.UpdateUser;
 
 public class UpdateUserCommand : IRequest<UserDetailsDto>
 {
