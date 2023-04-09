@@ -12,10 +12,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Modsen.Authors.Controllers;
 
-/// <summary>
-/// Author service endpoints
-/// </summary>
-[Route("api/[controller]/[action]")]
+[SwaggerTag("Author service endpoints")]
+[Route("api/[controller]/")]
 [ApiController]
 public class AuthorsController : ControllerBase
 {

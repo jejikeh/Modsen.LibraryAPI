@@ -49,7 +49,7 @@ public class AuthorsDataClient : IAuthorsDataClient
             JsonSerializer.Serialize(createAuthorDto), 
             Encoding.UTF8,
             "application/json");
-        var request = await _httpClient.PostAsync(_configuration.GetServiceUri("modsen-authors") + "api/Authors/CreateAuthor", jsonContent);
+        var request = await _httpClient.PostAsync(_configuration.GetServiceUri("modsen-authors") + "api/Authors", jsonContent);
         if (request.IsSuccessStatusCode)
             _logger.LogInformation("Sync Get books to books service was successful");
         else
