@@ -12,7 +12,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Modsen.Books.Controllers;
 
 [Route("api/authors/{authorId:guid}/books")]
-[SwaggerTag("Author and book relation contoller")]
+[SwaggerTag("Author and book relation controller")]
 [ApiController]
 public class AuthorBooksController : ControllerBase
 {

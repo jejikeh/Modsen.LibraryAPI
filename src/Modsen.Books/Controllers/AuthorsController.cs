@@ -3,23 +3,23 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Modsen.Books.Application.Commands.GetAuthors;
 using Modsen.Books.Application.Dtos;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Modsen.Books.Controllers;
 
 [Route("api/[controller]")]
+[SwaggerTag("Authors controller")]
 [ApiController]
 public class AuthorsController : ControllerBase
 {
     private readonly ILogger<AuthorsController> _logger;
-    private readonly IMapper _mapper;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
     
-    public AuthorsController(ILogger<AuthorsController> logger, IMapper mapper)
+    public AuthorsController(ILogger<AuthorsController> logger)
     {
         _logger = logger;
-        _mapper = mapper;
     }
 
     [HttpGet]
