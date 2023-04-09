@@ -5,9 +5,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Modsen.Library.Application.Commands.CreateUser;
 using Modsen.Library.Application.Commands.GetUser;
-using Modsen.Library.Application.Commands.GetUsers;
+using Modsen.Library.Application.Commands.Users.CreateUser;
+using Modsen.Library.Application.Commands.Users.GetUser;
+using Modsen.Library.Application.Commands.Users.GetUsers;
 using Modsen.Library.Application.Dtos;
 using Modsen.Library.Configuration;
 using Modsen.Library.Models;
@@ -22,16 +23,9 @@ namespace Modsen.Library.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly IMapper _mapper;
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
-    public UsersController(IMapper mapper, IMediator? mediator)
-    {
-        _mapper = mapper;
-        _mediator = mediator;
-    }
-    
     [SwaggerOperation(Summary = "Get Information about authorize user")]
     [HttpGet("Account")]
     [Authorize]

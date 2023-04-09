@@ -14,18 +14,14 @@ namespace Modsen.Library.Controllers;
 [SwaggerTag("User book rent controller")]
 [Route("api/users/{userId:guid}/[controller]")]
 [ApiController]
-public class BookRentsController : ControllerBase
+public class UserBookRentsController : ControllerBase
 {
     private IMediator? _mediator;
     private IMediator? Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-
-    public BookRentsController(IMediator? mediator)
-    {
-        _mediator = mediator;
-    }
     
     [SwaggerOperation(Summary = "Update user book rent")]
     [HttpPut]
+    [Authorize]
     public async Task<ActionResult<string>> UpdateBookRent(Guid userId, [FromBody] UpdateBookRentDto updateBookRentDto)
     {
         if (Mediator is null)
@@ -44,6 +40,7 @@ public class BookRentsController : ControllerBase
     
     [SwaggerOperation(Summary = "Delete user book rent")]
     [HttpDelete]
+    [Authorize]
     public async Task<ActionResult<string>> DeleteBookRent(Guid userId, [FromBody] DeleteBookRentDto deleteBookRentDto)
     {
         if (Mediator is null)
@@ -74,6 +71,7 @@ public class BookRentsController : ControllerBase
 
     [SwaggerOperation(Summary = "Create new book rent for user")]
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<UserDetailsDto>> CreateBookRent(Guid userId, [FromBody] CreateBookRentDto createBookRentDto)
     {
         if (Mediator is null)
