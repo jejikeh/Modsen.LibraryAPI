@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Modsen.Library.Application.Dtos;
 using Modsen.Library.Models;
 using Modsen.Library.Services.DataClient;
 using Swashbuckle.AspNetCore.Annotations;
@@ -28,6 +29,24 @@ public class BooksController : ControllerBase
     {
         var authors = await _booksDataClient.GetAllBooks();
         return Ok(authors);
+    }
+    
+    [SwaggerOperation(Summary = "Fetch authors data from the books service")]
+    [HttpGet("authors")]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<AuthorMinimalDto>>> GetAllAuthors()
+    {
+        var authors = await _booksDataClient.GetAllBookAuthors();
+        return Ok(authors);
+    }
+    
+    [SwaggerOperation(Summary = "Create books data in the books service")]
+    [HttpPost]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<CreateBookDto>>> CreateBooks([FromBody] CreateBookDto createBookDto)
+    {
+        var bookDto = await _booksDataClient.CreateBook(createBookDto);
+        return Ok(bookDto);
     }
     
     [SwaggerOperation(Summary = "Fetch books data by isbn from the books service")]

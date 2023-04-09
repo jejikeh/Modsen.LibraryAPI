@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Immutable;
+using System.Text;
 using System.Text.Json;
+using Modsen.Library.Application.Dtos;
 using Modsen.Library.Models;
 
 namespace Modsen.Library.Services.DataClient;
@@ -39,5 +41,20 @@ public class AuthorsDataClient : IAuthorsDataClient
         
         _logger.LogError("Sync Get request to author service was not successful");
         return ImmutableArray<Author>.Empty;
+    }
+
+    public async Task<CreateAuthorDto> CreateAuthor(CreateAuthorDto createAuthorDto)
+    {
+        using var jsonContent = new StringContent(
+            JsonSerializer.Serialize(createAuthorDto), 
+            Encoding.UTF8,
+            "application/json");
+        var request = await _httpClient.PostAsync(_configuration.GetServiceUri("modsen-authors") + "api/Authors/CreateAuthor", jsonContent);
+        if (request.IsSuccessStatusCode)
+            _logger.LogInformation("Sync Get books to books service was successful");
+        else
+            _logger.LogError("Sync Get request to books service was not successful");
+        
+        return createAuthorDto;       
     }
 }

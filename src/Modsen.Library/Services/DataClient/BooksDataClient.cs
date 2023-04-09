@@ -1,5 +1,7 @@
 ﻿using System.Collections.Immutable;
+using System.Text;
 using System.Text.Json;
+using Modsen.Library.Application.Dtos;
 using Modsen.Library.Models;
 
 namespace Modsen.Library.Services.DataClient;
@@ -67,5 +69,41 @@ public class BooksDataClient : IBooksDataClient
             Year = default,
             AuthorId = default
         };
+    }
+
+    public async Task<CreateBookDto> CreateBook(CreateBookDto bookDto)
+    {
+        using var jsonContent = new StringContent(
+            JsonSerializer.Serialize(bookDto),
+            Encoding.UTF8,
+            "application/json");
+        var request = await _httpClient.PostAsync(_configuration.GetServiceUri("modsen-books") + $"api/authors/{bookDto.AuthorId}/books", jsonContent);
+        if (request.IsSuccessStatusCode)
+            _logger.LogInformation("Sync Get books to books service was successful");
+        else
+            _logger.LogError("Sync Get request to books service was not successful");
+        
+        return bookDto;
+    }
+
+    public async Task<IEnumerable<AuthorMinimalDto>> GetAllBookAuthors()
+    {
+        var request = await _httpClient.GetAsync(_configuration.GetServiceUri("modsen-books") + "api/Authors");
+        if (request.IsSuccessStatusCode)
+        {
+            _logger.LogInformation("Sync Get authors to books service was successful");
+            var books = await JsonSerializer.DeserializeAsync<IEnumerable<AuthorMinimalDto>>(await request.Content.ReadAsStreamAsync(), new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            if (books is not null)
+                return books;
+            _logger.LogError("Failed to parse data from books service");
+            throw new NullReferenceException(nameof(Book));
+        }
+        
+        _logger.LogError("Sync Get request to books service was not successful");
+        return ImmutableArray<AuthorMinimalDto>.Empty;
     }
 }
