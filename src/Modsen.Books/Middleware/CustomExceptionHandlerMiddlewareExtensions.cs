@@ -1,4 +1,4 @@
-﻿namespace Modsen.Library.Middleware;
+﻿namespace Modsen.Books.Middleware;
 
 public static class CustomExceptionHandlerMiddlewareExtensions
 {

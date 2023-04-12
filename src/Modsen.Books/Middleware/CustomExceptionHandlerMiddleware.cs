@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json;
-using Modsen.Library.Application.Common.Exceptions;
+using Modsen.Books.Application.Common.Exceptions;
+using Modsen.Books.Models;
 
-namespace Modsen.Library.Middleware;
+namespace Modsen.Books.Middleware;
 
 public class CustomExceptionHandlerMiddleware
 {
@@ -36,8 +37,13 @@ public class CustomExceptionHandlerMiddleware
                 code = HttpStatusCode.BadRequest;
                 result = JsonSerializer.Serialize(validationException.Message);
                 break;
-            case NotFoundException<object>:
+            case NotFoundException<Book>:
                 code = HttpStatusCode.NotFound;
+                result = "Book was not found";
+                break;
+            case NotFoundException<Author>:
+                code = HttpStatusCode.NotFound;
+                result = "Author was not found";
                 break;
         }
 

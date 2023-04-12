@@ -1,4 +1,5 @@
 using Modsen.Authors.Extensions;
+using Modsen.Authors.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.RegisterServiceMiddleware();
@@ -11,6 +12,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCustomExceptionHandler();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
